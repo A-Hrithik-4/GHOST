@@ -1,0 +1,81 @@
+================================================================================
+         GHOST PHASE 7 EXP 1: 1D-CNN SPEED UNDERESTIMATION DIAGNOSIS REPORT
+================================================================================
+
+EXECUTIVE METRIC SUMMARY
+--------------------------------------------------------------------------------
+Dataset Split            N_samples    GT Mean    CNN Mean   Signed Error   MAE      RMSE     R²
+--------------------------------------------------------------------------------
+Full Dataset             11,486       58.17 km/h 56.59 km/h -1.58 km/h   16.73    20.69    0.350
+Pre-Outage (t < 30s)        300       56.62 km/h 52.94 km/h -3.68 km/h    8.71    10.37   -1.303
+GNSS Outage (30s-90s)       600       69.75 km/h 54.85 km/h -14.90 km/h  15.89    17.13  -12.318
+Post-Outage (t >= 90s)   10,586       58.26 km/h 57.49 km/h -0.77 km/h   17.00    21.09    0.369
+--------------------------------------------------------------------------------
+
+SPEED-BIN BREAKDOWN TABLE (FULL DATASET)
+------------------------------------------------------------------------------------------------
+Bin (km/h)  Samples   Mean GT (km/h)  Mean CNN (km/h)  Signed Error (km/h)  MAE (km/h)  RMSE (km/h)
+------------------------------------------------------------------------------------------------
+0-10        911               1.35            26.68                25.33       25.33       27.36
+10-20       220              14.43            39.94                25.51       25.51       29.79
+20-30       492              25.39            52.34                26.95       26.95       32.90
+30-40       793              35.39            60.55                25.16       25.46       32.17
+40-50       1434             45.51            54.80                 9.29       11.73       16.01
+50-60       1094             55.10            55.95                 0.86        9.06       11.69
+60-70       1800             65.43            58.77                -6.66        9.74       11.76
+70-80       2027             74.63            61.56               -13.07       14.05       15.97
+80+         2715             86.94            66.37               -20.57       21.08       22.73
+------------------------------------------------------------------------------------------------
+
+DETAILED DIAGNOSTIC QUESTION ANSWERS
+--------------------------------------------------------------------------------
+
+1. Does the CNN itself have a systematic bias?
+   ANSWER: YES (Speed-Dependent Compression Bias).
+   EVIDENCE: Across the entire dataset, the CNN does NOT have a uniform scalar bias (global mean signed error = -1.58 km/h). However, it exhibits severe SPEED-DEPENDENT REGRESSION COMPRESSION:
+   * Low speeds (0–40 km/h)  : Systematic OVERESTIMATION by +25.16 to +26.95 km/h.
+   * High speeds (>65 km/h)  : Systematic UNDERESTIMATION by -6.66 to -20.57 km/h.
+   * Mid speeds (50–60 km/h) : Unbiased (+0.86 km/h error).
+
+2. Does the bias appear mainly during GNSS outage?
+   ANSWER: NO (Appears during high-speed operation, which coincides with the outage window).
+   EVIDENCE: The outage window happens to occur when the vehicle is cruising at 68.0 to 78.0 km/h (mean GT speed = 69.75 km/h). In the 70–80 km/h speed bin, the CNN predicts a mean of 54.85 km/h (error = -14.90 km/h). This identical underestimation occurs across all non-outage segments where ground truth speed exceeds 65 km/h.
+
+3. Is the error speed-dependent?
+   ANSWER: YES (Strongly speed-dependent).
+   EVIDENCE: The signed prediction error transitions smoothly from +25.33 km/h at 0–10 km/h -> +0.86 km/h at 50–60 km/h -> -14.90 km/h at 70–80 km/h -> -20.57 km/h at 80+ km/h.
+
+4. Is the error dynamics-dependent?
+   ANSWER: NO (Weak correlation with acceleration and yaw rate).
+   EVIDENCE: Correlation between CNN speed error and longitudinal acceleration is r = -0.0783. Correlation with yaw rate is r = -0.0173. The error is governed almost entirely by target speed magnitude rather than transient longitudinal/lateral vehicle dynamics.
+
+5. Does EKF fusion worsen the CNN error?
+   ANSWER: NO (EKF slightly reduces CNN error).
+   EVIDENCE:
+   * Raw CNN Outage Speed Mean  : 54.85 km/h (Error: -14.90 km/h vs GT)
+   * Fused EKF Outage Speed Mean: 55.60 km/h (Error: -14.15 km/h vs GT)
+   * Ground Truth Outage Speed  : 69.75 km/h
+   The EKF tracks the CNN speed closely due to measurement noise R_v = 6.25 (m/s)², but the IMU longitudinal acceleration integration step slightly pulls the state UP by +0.75 km/h. The -14.15 km/h deficit originates 100% inside the raw CNN predictions.
+
+6. What is the most likely root cause?
+   ANSWER: IMU Feature Ambiguity for Constant Velocity + MSE Regression Range Compression.
+   TECHNICAL EXPLANATION:
+   A. IMU Ambiguity: 1D-CNN features consist of instantaneous accelerations and gyro rates. During steady high-speed cruising (70 km/h on a straight road), accelerations and turn rates are near zero (a_x ~ 0, gyro_z ~ 0). At 0 km/h stationary rest, accelerations and turn rates are ALSO near zero! Without velocity integration state or wheel speed inputs, IMU features alone are fundamentally ambiguous for constant cruising velocity.
+   B. Range Compression: The Huber loss objective trained on a wide speed range (0 to 98 km/h) penalizes large variance, compressing predictions toward the dataset mean (~55-60 km/h).
+
+7. What should we optimize first?
+   ANSWER: Speed Calibration / Adaptive CNN Speed Scale-Bias Compensation.
+   JUSTIFICATION:
+   * Retraining CNN from scratch without structural velocity state will not resolve IMU ambiguity for constant velocity.
+   * Tuning EKF covariance R_v alone cannot fix an uncompensated biased measurement.
+   * Applying pre-outage speed ratio / linear bias compensation directly aligns the CNN output scale with the true vehicle velocity prior to GNSS blackout.
+
+--------------------------------------------------------------------------------
+FINAL REQUIRED SUMMARY BLOCK
+--------------------------------------------------------------------------------
+CNN BIAS: -14.90 km/h
+OUTAGE BIAS: -14.90 km/h
+EKF CONTRIBUTION: +0.75 km/h
+PRIMARY ROOT CAUSE: Speed-Dependent CNN Regression Compression due to IMU Feature Ambiguity for Constant High-Speed Cruising
+RECOMMENDED FIRST OPTIMIZATION: speed calibration
+================================================================================

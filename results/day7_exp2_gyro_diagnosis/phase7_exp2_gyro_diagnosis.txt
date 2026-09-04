@@ -1,0 +1,94 @@
+================================================================================
+     GHOST PHASE 7 EXP 2: GYRO BIAS & HEADING ERROR DIAGNOSIS REPORT
+================================================================================
+
+1. EXPERIMENT OBJECTIVE & BASELINE REPRODUCTION
+--------------------------------------------------------------------------------
+- Objective: Determine whether gyroscope bias and heading estimation errors are a significant remaining contributor to the 4.54% drift observed after applying Exp 1 Linear speed calibration.
+- Baseline Reproduction Status: REPRODUCED SUCCESSFULLY ✅
+  * Integrated Traveled Distance: 1085.51 meters
+  * Mean Position Error         : 33.91 meters (Target: ~33.91m)
+  * Position RMSE               : 36.98 meters (Target: ~36.98m)
+  * Final Position Error        : 52.80 meters (Target: ~52.80m)
+  * Baseline Drift %            : 4.54% (Target: ~4.54%)
+
+2. HEADING ERROR DIAGNOSIS (OUTAGE WINDOW)
+--------------------------------------------------------------------------------
+- Ground-Truth vs EKF Heading Error Metrics (Variant A Baseline):
+  * Initial Heading Error (t=30s) : 0.86°
+  * Mean Heading Error            : 12.54°
+  * RMSE Heading Error            : 16.22°
+  * Max Heading Error             : 43.90° (at t=35.0s during early outage curve)
+  * Final Heading Error (t=89.9s) : 3.51°
+  
+HEADING ERROR PROGRESSION TABLE:
+Timestamp(s)   Heading Err(°)   Total Pos Err(m)   Along-Track(m)   Cross-Track(m)   Speed Err(km/h)   Gyro Bias(°/s)
+-----------------------------------------------------------------------------------------------------------------------
+        30.0             0.86               0.03            -0.00            -0.03            -0.52        22.3875
+        40.0            32.28              35.04            24.45           -25.11             3.21         8.9892
+        50.0            10.23              61.14            52.40           -31.51             1.67         4.0302
+        60.0             6.41              28.90            14.81           -24.81           -11.40         1.7488
+        70.0             7.86              29.01           -13.75           -25.55             0.38         0.6315
+        80.0            13.80              36.76           -25.75           -26.24           -11.00         0.0195
+        89.9             3.51              52.80           -44.72           -28.07            -7.02        -0.1410
+-----------------------------------------------------------------------------------------------------------------------
+
+3. GYROSCOPE BIAS DIAGNOSIS & INITIALIZATION AUDIT
+--------------------------------------------------------------------------------
+- Pre-outage Initial Bias (t=29.9s) : +0.390762 rad/s (+22.3875 deg/s)
+- Outage Mean Bias                  : +0.071866 rad/s (+4.1176 deg/s)
+- Outage Median Bias                : +0.026779 rad/s (+1.5343 deg/s)
+- Outage Final Bias (t=89.9s)       : -0.003378 rad/s (-0.1936 deg/s)
+- Max Absolute Bias                 : +0.390762 rad/s (+22.3875 deg/s)
+
+INITIALIZATION AUDIT FINDING:
+Inspection confirms that the Phase 6 initialization (+22.39 deg/s) mistook physical vehicle turning during pre-outage (t=15s..30s) for hardware gyro bias. This false initial bias caused initial heading distortion during early blackout (t=30s..45s), introducing a lateral/cross-track position offset of up to -28.07m.
+
+4. STATIONARY / LOW-DYNAMICS BIAS CALIBRATION EVIDENCE
+--------------------------------------------------------------------------------
+Candidate Stationary Intervals Discovered (v_gt < 1.0 km/h):
+- Interval 1: t = 530.5s to 538.5s (8.1s duration)  | Mean Yaw Rate: -0.03306 rad/s (-1.894 deg/s) | Std: 1.14 deg/s
+- Interval 2: t = 825.0s to 836.5s (11.6s duration) | Mean Yaw Rate: -0.03049 rad/s (-1.747 deg/s) | Std: 3.42 deg/s
+- Interval 3: t = 1001.8s to 1022.3s (20.6s duration)| Mean Yaw Rate: -0.02791 rad/s (-1.599 deg/s) | Std: 1.35 deg/s
+
+CONCLUSION ON STATIONARY BIAS:
+A true stationary hardware zero-rate bias exists at approximately -0.028 to -0.033 rad/s (-1.6°/s to -1.9°/s).
+
+5. COUNTERFACTUAL GYRO VARIANT COMPARISON
+-----------------------------------------------------------------------------------------------------------------------
+Variant                              Mean Err(m)  RMSE(m)   Final Err(m)  Drift %   Mean HeadErr(°)  Final Along(m)  Final Cross(m)
+-----------------------------------------------------------------------------------------------------------------------
+Variant A (Baseline +22.39°/s)         33.91       36.98       52.80       4.54%       12.54°            -44.72          -28.07
+Variant B (Zero Bias 0.0°/s)           28.14       36.39       78.02       6.71%        3.58°            -78.02           -0.03
+Variant C (Stationary Bias -1.89°/s)   28.21       36.40       78.02       6.71%        3.25°            -78.01           +1.19
+Variant D (Fixed +22.39°/s No Adapt)  226.90      269.20      497.81      42.82%       57.60°           +209.56         -451.55
+-----------------------------------------------------------------------------------------------------------------------
+
+ANALYSIS OF COUNTERFACTUAL VARIANTS:
+1. When false initial gyro bias is removed (Variant B: 0.0°/s or Variant C: -1.89°/s), Mean Heading Error drops from 12.54° down to 3.25°, and Final Cross-Track Error drops to ZERO (-0.03m / +1.19m).
+2. With lateral error eliminated, 100% of the remaining position error in Variant B/C is LONGITUDINAL (Along-Track Speed Lag of -78.02m).
+3. In Variant A Baseline, the cross-track error vector (-28.07m lateral) and along-track error vector (-44.72m longitudinal) slightly canceled each other in total Euclidean magnitude, yielding 52.80m (4.54% drift). In Variant B/C, being perfectly centered on the road corridor leaves purely the uncompensated speed lag of 78.02m (6.71% drift).
+
+6. LEAKAGE AUDIT VERIFICATION
+--------------------------------------------------------------------------------
+[PASS] Phase 6 Files Frozen      : phase6_ekf_fusion.py and Phase 6 CSV remain 100% untouched
+[PASS] No Outage GT Tuning       : Gyro bias variants were evaluated strictly as diagnostic probes
+[PASS] Stationary Bias Source    : Measured from post-outage stationary stop (t=530.5s..538.5s), NOT outage GT
+
+7. FINAL DIAGNOSIS VERDICT
+--------------------------------------------------------------------------------
+DIAGNOSIS: CASE C — GYRO BIAS CONTRIBUTES TO LATERAL HEADING TENSION, BUT SPEED ERROR REMAINS THE DOMINANT SOURCE OF POSITIONAL DRIFT.
+
+JUSTIFICATION:
+- Removing gyro bias reduces cross-track position error to virtually ZERO (-0.03m).
+- However, total position error remains governed by longitudinal along-track speed underestimation (-78.02m speed lag).
+- Gyro bias correction eliminates heading tension, but speed estimation remains the primary bottleneck for further drift reduction below 2.0%.
+
+8. RECOMMENDED NEXT EXPERIMENT
+--------------------------------------------------------------------------------
+RECOMMENDATION: Phase 7 Experiment 3 — Multi-State Speed Adaptation / Adaptive EKF Covariance Tuning.
+Focus effort on resolving the remaining along-track speed lag (-78.02m), which represents >98% of positional error once lateral heading is anchored.
+
+================================================================================
+END OF DIAGNOSIS REPORT
+================================================================================

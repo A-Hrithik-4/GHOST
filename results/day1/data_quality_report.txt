@@ -1,0 +1,25 @@
+==========================================
+ DATA QUALITY REPORT: PRIMARY SEQUENCE (Vfa01)
+==========================================
+Total Rows: 11,486
+Sampling Rate: 10 Hz (Step: 0.1s)
+Total Duration: 19.14 minutes
+Missing Values Per Column: {'timestamp': 0, 'acc_x': 0, 'acc_y': 0, 'acc_z': 0, 'gyro_x': 0, 'gyro_y': 0, 'gyro_z': 0, 'ground_truth_lat': 0, 'ground_truth_lon': 0, 'ground_truth_speed': 0, 'ground_truth_heading': 0, 'gnss_status': 0}
+Duplicate Timestamps: 0
+GPS Coordinates Validity: Lat=True, Lon=True
+Speed Range: [0.0, 98.4] km/h | Impossible Speeds (>200km/h): 0
+Max Acceleration Amplitude: 16.52 m/s² | Stuck Sensors: False
+Sampling Interval Consistency (dt std): 0.000000s
+
+==========================================
+ DATA QUALITY REPORT: BACKUP SEQUENCE (Vta2)
+==========================================
+Total Rows: 10,991
+Sampling Rate: 10 Hz (Step: 0.1s)
+Total Duration: 18.32 minutes
+Missing Values Per Column: {'timestamp': 0, 'acc_x': 0, 'acc_y': 0, 'acc_z': 0, 'gyro_x': 0, 'gyro_y': 0, 'gyro_z': 0, 'ground_truth_lat': 0, 'ground_truth_lon': 0, 'ground_truth_speed': 0, 'ground_truth_heading': 0, 'gnss_status': 0}
+Duplicate Timestamps: 0
+GPS Coordinates Validity: Lat=True, Lon=True
+Speed Range: [0.0, 81.6] km/h | Impossible Speeds (>200km/h): 0
+Max Acceleration Amplitude: 21.15 m/s² | Stuck Sensors: False
+Sampling Interval Consistency (dt std): 0.000000s

@@ -1,0 +1,9 @@
+seq_id,s_file,v_file,rows,duration_min,sampling_rate,speed_max_kmh,heading_std,nulls,suitable
+Vfa01,S-Vfa01.csv,V-Vfa01.csv,11486,19.14,10 Hz,98.4,156.6,0,YES
+Vfa02,S-Vfa02.csv,V-Vfa02.csv,67523,112.54,10 Hz,117.9,144.7,0,YES
+Vta2,S-Vta2.csv,V-Vta2.csv,10991,18.32,10 Hz,81.6,128.6,0,YES
+Vw1,S-Vw1.csv,V-Vw1.csv,20475,34.12,10 Hz,0.3,0.0,0,NO
+Vw2,S-Vw2.csv,V-Vw2.csv,52712,87.85,10 Hz,115.4,57.3,0,YES
+S1,S-S1.csv,V-S1.csv,51746,86.24,10 Hz,93.8,103.0,0,YES
+S2,S-S2.csv,V-S2.csv,93876,156.46,10 Hz,105.2,108.7,0,YES
+S3a,S-S3a.csv,V-S3a.csv,7233,12.06,10 Hz,98.0,83.4,3,NO

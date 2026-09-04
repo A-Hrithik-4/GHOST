@@ -1,0 +1,48 @@
+================================================================================
+                    GHOSTTRACK PHASE 2 VALIDATION REPORT (UPDATED)
+================================================================================
+
+1. DATASET METRICS
+------------------
+- File Processed: data/processed/ghosttrack_primary_Vfa01.csv
+- Total Rows: 11,486
+- Sampling Frequency: 10 Hz (dt = 0.1s fixed step)
+- Total Duration: 19.14 minutes (1148.5 seconds)
+- Missing Values Before/After: 0 / 0
+- Timestamp Monotonicity: PASS (Strictly Increasing)
+
+2. SIGNAL PREPROCESSING METHODS & GRAVITY HANDLING (UPDATED)
+------------------------------------------------------------
+- Filtering Method: 2nd Order Butterworth Low-pass Filter (Zero-phase filtfilt)
+  * Cutoff Frequency: 3.0 Hz (Preserves vehicle acceleration/braking dynamics)
+- 3-AXIS GRAVITY SUBTRACTION (FIXED):
+  * Extracted per-axis gravity channels (GRAVITY X, Y, Z) directly from smartphone raw sensor stream.
+  * Performed component-wise subtraction: ax_dyn = ax - gx, ay_dyn = ay - gy, az_dyn = az - gz.
+  * Completely removes phone mount tilt bias from longitudinal (ay) and lateral (ax) acceleration channels!
+- Gyroscope Bias Handling: Static zero-rate bias estimated from initial 2.0s static period (20 samples) and subtracted from Gyro X/Y/Z channels.
+- Sensor Spike Handling: Threshold clipping at [-30.0, +30.0] m/s² for Accel and [-5.0, +5.0] rad/s for Gyro.
+
+3. REAL OPENSTREETMAP MAP-MATCHING FEASIBILITY SPIKE (FIXED)
+-----------------------------------------------------------
+- Map Source: Official OpenStreetMap XML road network dataset (osm_raw_map.xml -> 820 KB, 48 highway ways).
+- Disambiguation Engine: Multi-candidate segment matching evaluating composite cost score:
+  Score = Spatial Distance (d) + Heading Penalty (min(|psi_veh - psi_road|, 360 - |psi_veh - psi_road|)).
+- Result: Successfully disambiguates candidate parallel/crossing roads and snaps noisy trajectory back onto real OSM highways (Watling Street, Atherstone Road). Verified in plot6_map_matching_feasibility.png.
+
+4. DERIVED FEATURE MATRIX (28 Total Columns in ghosttrack_phase2_primary.csv)
+-----------------------------------------------------------------------------
+- Raw Signals (6): acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z
+- Filtered Signals (6): acc_x_clean, acc_y_clean, acc_z_clean, gyro_x_clean, gyro_y_clean, gyro_z_clean
+- Vehicle Frame Features (4): longitudinal_acc, lateral_acc, vertical_acc, yaw_rate
+- Magnitude Features (2): acc_magnitude, gyro_magnitude
+- Rolling Window Features (4): acc_mean, acc_std, gyro_mean, gyro_std (5-step trailing window = 0.5s at 10Hz)
+- Ground Truth Reference (4): ground_truth_lat, ground_truth_lon, ground_truth_speed, ground_truth_heading
+- System Flags (1): gnss_status (1 = AVAILABLE, 0 = OUTAGE)
+
+5. MAP & UI SKELETON VERIFICATION
+---------------------------------
+- App Engine: Streamlit (app.py) + Plotly Mapbox canvas
+- Map Rendering: Complete route polyline, Start (Green) & End (Red) markers, active vehicle marker.
+- GNSS Outage Banner: Dynamically switches between 'GNSS STATUS: AVAILABLE' (Green) and 'GNSS STATUS: OUTAGE' (Red).
+
+6. PHASE 2 SUCCESS STATUS: 100% COMPLETE & VERIFIED ✅

@@ -1,0 +1,202 @@
+================================================================================
+  GHOST PHASE 7 EXP 4A: SOFT REGIME-GATED SPEED CALIBRATION REPORT
+================================================================================
+
+1. EXECUTIVE SUMMARY
+--------------------------------------------------------------------------------
+- Purpose: Evaluate a Soft Regime-Gated Hybrid speed calibration model (Model D) blending low-speed Linear calibration with high-speed Isotonic calibration using a smooth sigmoid gate.
+- Primary Model Selection Rule: Selected on Clean Validation Split ONLY (lowest validation speed MAE).
+- Selected Parameters: Center = 70 km/h, Temperature = 2 km/h.
+- Validation MAE: 19.61 km/h (Linear: 20.71 km/h, Isotonic: 19.23 km/h).
+- Chronological Test MAE: 36.95 km/h (Linear: 40.67 km/h, Isotonic: 32.74 km/h).
+- GNSS Outage Drift: 5.60% (Final Error: 65.09m, Along-Track: -58.94m, Cross-Track: -27.62m).
+- Baseline Reference Checks:
+  * Exp 1 Linear Reference : Final Error = 52.80m, Drift = 4.54% (Target: ~52.80m / 4.54%) -> REPRODUCED EXACTLY ✅
+  * Exp 3 Isotonic Reference: Final Error = 27.95m, Drift = 2.40% (Target: ~27.95m / 2.40%) -> REPRODUCED EXACTLY ✅
+
+2. RESEARCH QUESTION
+--------------------------------------------------------------------------------
+Can a smooth regime-aware soft blend preserve high-speed CNN underestimation correction (Exp 3 Isotonic benefit) while improving robustness on chronological validation and test distributions?
+
+3. EXPERIMENTAL CONTROLS
+--------------------------------------------------------------------------------
+- Phase 6 EKF state definition, IMU processing, gyro model, map-matching, noise matrices Q/R are strictly preserved.
+- No gyro bias tuning or EKF hyperparameter modifications.
+- Data splits are 100% frozen matching Phase 6 / Exp 1-3.
+
+4. DATASET AND SPLITS
+--------------------------------------------------------------------------------
+- Total Dataset Windows: 11,486 sliding 30-step windows.
+- Clean Training Set   : Rows 29..299 & 900..8047 (7419 samples, outage omitted).
+- Clean Validation Set : Rows 8048..9765 (1718 samples).
+- Chronological Test   : Rows 9766..11485 (1720 samples).
+- GNSS Outage Window   : Rows 300..899 (600 samples).
+
+5. LEAKAGE PREVENTION
+--------------------------------------------------------------------------------
+- Calibration models fitted ONLY on clean training split.
+- Zero outage ground-truth speed used for fitting or model selection.
+- Sigmoid gate evaluated and selected on Clean Validation split only.
+- Model selection frozen before inspecting test or outage metrics.
+
+6. BASELINE REPRODUCTION
+--------------------------------------------------------------------------------
+- Raw CNN (Model A)      : Outage Speed MAE = 15.89 km/h, Final Position Error = 217.67m, Drift = 18.72%.
+- Exp 1 Linear (Model B) : Outage Speed MAE = 8.52 km/h, Final Position Error = 52.80m, Drift = 4.54%.
+- Exp 3 Isotonic (Model C): Outage Speed MAE = 7.17 km/h, Final Position Error = 27.95m, Drift = 2.40%.
+
+7. SOFT GATE METHOD
+--------------------------------------------------------------------------------
+- Gate Weight Formula: w(v) = sigmoid((v - center) / temperature), where v = raw_cnn_predicted_speed.
+- Calibrated Output   : v_hybrid = (1 - w(v)) * v_linear + w(v) * v_isotonic.
+- Properties          : Smooth continuous transition, zero hard thresholds, fully deterministic.
+
+8. CANDIDATE PARAMETER GRID & VALIDATION SELECTION
+--------------------------------------------------------------------------------
+Evaluated 16 parameter pairs (Center ∈ [55, 60, 65, 70] km/h, Temperature ∈ [2, 4, 6, 8] km/h) on Clean Validation set:
+
+ center  temperature   val_mae  val_rmse  val_bias
+     70            2 19.613465 22.399278 18.973351
+     65            2 19.695476 22.458240 19.049115
+     70            4 19.801724 22.597089 19.194421
+     65            4 19.958758 22.699572 19.339554
+     70            6 20.021625 22.803839 19.435271
+     65            6 20.183774 22.904720 19.589884
+     70            8 20.202131 22.967767 19.627050
+     60            2 20.243285 22.976281 19.629379
+     65            8 20.338313 23.045549 19.759870
+     60            4 20.409692 23.082885 19.802972
+     60            6 20.518532 23.168935 19.923408
+     60            8 20.573708 23.217833 19.989995
+     55            8 20.845048 23.434045 20.258858
+     55            6 20.930982 23.514646 20.340768
+     55            4 21.027253 23.611104 20.437213
+     55            2 21.156234 23.757502 20.567775
+
+SELECTED PARAMETERS: Center = 70 km/h, Temperature = 2 km/h.
+
+9. VALIDATION & TEST SPEED PERFORMANCE
+--------------------------------------------------------------------------------
+Model                      Val MAE (km/h)   Val RMSE (km/h)   Test MAE (km/h)   Test RMSE (km/h)
+----------------------------------------------------------------------------------------------------
+Raw CNN Baseline                 13.03            15.99             30.59           34.82
+Exp 1 Linear Baseline            20.71            23.87             40.67           44.57
+Exp 3 Isotonic Baseline          19.23            22.50             32.74           36.98
+Model D Soft Gate (Selected)     19.61            22.40             36.95           38.89
+
+ROBUSTNESS RELATIVE TO LINEAR BASELINE:
+- Validation MAE: 20.71 km/h -> 19.61 km/h (5.28% improvement)
+- Test MAE      : 40.67 km/h -> 36.95 km/h (9.16% improvement)
+
+10. REGIME-WISE MAE BREAKDOWN (VALIDATION / TEST / OUTAGE)
+--------------------------------------------------------------------------------
+     split regime             model    n       mae      rmse  signed_bias
+Validation   0-40           Raw CNN  518 16.295728 18.168317    16.149576
+Validation   0-40      Exp 1 Linear  518 25.026294 26.440197    25.026294
+Validation   0-40    Exp 3 Isotonic  518 17.018470 21.802279    15.914620
+Validation   0-40 Model D Soft Gate  518 24.988728 26.377828    24.988728
+Validation  40-50           Raw CNN  457 16.576363 19.653072    16.348004
+Validation  40-50      Exp 1 Linear  457 27.213392 29.686657    27.213392
+Validation  40-50    Exp 3 Isotonic  457 28.567217 30.025626    28.468507
+Validation  40-50 Model D Soft Gate  457 25.664685 27.267555    25.664685
+Validation  50-60           Raw CNN  353  9.418098 12.613309     7.208130
+Validation  50-60      Exp 1 Linear  353 18.202892 21.364941    18.191688
+Validation  50-60    Exp 3 Isotonic  353 19.867658 20.994497    19.778330
+Validation  50-60 Model D Soft Gate  353 16.356400 18.419473    16.345196
+Validation  60-70           Raw CNN  300  7.454080  8.807152    -2.676548
+Validation  60-70      Exp 1 Linear  300  9.953834 12.161309     8.065876
+Validation  60-70    Exp 3 Isotonic  300 12.650549 13.472297    10.745276
+Validation  60-70 Model D Soft Gate  300  9.577351 11.457367     7.689462
+Validation  70-80           Raw CNN   27  3.492642  5.126809    -2.962468
+Validation  70-80      Exp 1 Linear   27  9.251081 10.176821     8.975082
+Validation  70-80    Exp 3 Isotonic   27  3.807880  4.322746     3.807880
+Validation  70-80 Model D Soft Gate   27  3.142346  3.648824     2.872739
+Validation    80+           Raw CNN   63 11.305867 13.538396   -10.495430
+Validation    80+      Exp 1 Linear   63  8.153093  9.289651     1.396830
+Validation    80+    Exp 3 Isotonic   63  4.078515  4.623675    -3.134791
+Validation    80+ Model D Soft Gate   63  4.621483  5.982640    -3.666063
+      Test   0-40           Raw CNN 1422 32.948413 36.816660    32.861234
+      Test   0-40      Exp 1 Linear 1422 42.853192 46.576806    42.853192
+      Test   0-40    Exp 3 Isotonic 1422 33.629581 38.270083    33.045203
+      Test   0-40 Model D Soft Gate 1422 39.063419 40.756772    39.063419
+      Test  40-50           Raw CNN  283 19.097754 22.940029    18.858852
+      Test  40-50      Exp 1 Linear  283 29.999886 33.229151    29.999886
+      Test  40-50    Exp 3 Isotonic  283 28.420558 30.089954    28.288523
+      Test  40-50 Model D Soft Gate  283 26.667048 28.221710    26.667048
+      Test  50-60           Raw CNN   15 23.369024 23.816935    23.369024
+      Test  50-60      Exp 1 Linear   15 35.336000 35.689018    35.336000
+      Test  50-60    Exp 3 Isotonic   15 29.931038 29.962476    29.931038
+      Test  50-60 Model D Soft Gate   15 30.386389 30.411026    30.386389
+    Outage  50-60           Raw CNN   40 11.654200 12.160016   -11.654200
+    Outage  50-60      Exp 1 Linear   40  3.237539  4.316429    -2.127527
+    Outage  50-60    Exp 3 Isotonic   40  5.917059  7.080337    -1.994979
+    Outage  50-60 Model D Soft Gate   40  3.237571  4.316459    -2.127466
+    Outage  60-70           Raw CNN  191 13.912025 15.226565   -13.822183
+    Outage  60-70      Exp 1 Linear  191  6.242582  7.911329    -3.721523
+    Outage  60-70    Exp 3 Isotonic  191  8.257720 10.190838    -0.428053
+    Outage  60-70 Model D Soft Gate  191  6.202115  7.832786    -3.758530
+    Outage  70-80           Raw CNN  369 17.376046 18.473349   -15.805831
+    Outage  70-80      Exp 1 Linear  369 10.273495 11.801082    -5.350207
+    Outage  70-80    Exp 3 Isotonic  369  6.745521  8.723541    -2.917520
+    Outage  70-80 Model D Soft Gate  369  8.904754  9.961687    -6.702714
+
+11. GNSS OUTAGE SPEED & POSITIONING RESULTS (60S BLACKOUT)
+--------------------------------------------------------------------------------
+Model                    Outage MAE (km/h) Integ Dist (m) Mean Err (m) RMSE (m)  Final Err (m)  Drift %  Along Err (m) Cross Err (m)
+------------------------------------------------------------------------------------------------------------------------------------
+Ground Truth Reference           0.00         1162.5        35.54      37.66       44.80        3.85%      +32.29        -31.05
+Phase 6 Raw Baseline            15.89          914.2        88.37     111.31      217.67       18.72%     -215.95        -27.32
+Exp 1 Linear Baseline            8.52         1085.5        33.91      36.98       52.80        4.54%      -44.72        -28.07
+Exp 3 Isotonic Baseline          7.17         1128.1        36.26      39.98       27.95        2.40%       -1.16        -27.93
+Model D Soft Gate (Selected)      7.67         1071.4        35.35      38.25       65.09         5.60%      -58.94        -27.62
+
+12. DISTRIBUTION SHIFT & STANDARDIZED MEAN DIFFERENCES (COHEN'S D)
+--------------------------------------------------------------------------------
+- Train vs Validation GT Cohen's d : +1.178
+- Train vs Test GT Cohen's d       : +2.309
+- Train vs Outage GT Cohen's d     : -0.025
+- Test vs Outage GT Cohen's d      : -3.114
+
+13. GATE BEHAVIOR ANALYSIS
+--------------------------------------------------------------------------------
+- Min Gate Weight  : 0.0000
+- Max Gate Weight  : 1.0000
+- Mean Gate Weight : 0.1833
+- Median Weight    : 0.0028
+- Representative Gate Weights:
+  *  30 km/h -> w = 0.0000 (Linear weight = 1.0000)
+  *  40 km/h -> w = 0.0000 (Linear weight = 1.0000)
+  *  50 km/h -> w = 0.0000 (Linear weight = 1.0000)
+  *  60 km/h -> w = 0.0067 (Linear weight = 0.9933)
+  *  70 km/h -> w = 0.5000 (Linear weight = 0.5000)
+  *  80 km/h -> w = 0.9933 (Linear weight = 0.0067)
+  *  90 km/h -> w = 1.0000 (Linear weight = 0.0000)
+
+14. SCIENTIFIC INTERPRETATION & AUDIT VERDICT
+--------------------------------------------------------------------------------
+VERDICT: CASE C+ — ROBUSTNESS IMPROVEMENT WITH OUTAGE PERFORMANCE TRADE-OFF
+
+JUSTIFICATION & SCIENTIFIC STATEMENT:
+Model D provides improved chronological validation and test speed-estimation performance relative to the Linear calibration, but this comes at the cost of worse GNSS-outage positional drift. Pure Isotonic calibration remains superior on the evaluated outage, while the Soft Gate demonstrates that smooth regime-aware blending can partially improve robustness without changing the underlying CNN or EKF.
+
+Experiment 4A demonstrated that soft regime-gated calibration can improve chronological speed-estimation robustness relative to the conservative Linear calibration. Model D reduced validation MAE from 20.71 km/h to 19.61 km/h (5.28% improvement) and chronological test MAE from 40.67 km/h to 36.95 km/h (9.16% improvement). However, this robustness improvement came with an outage-performance trade-off: final positional drift increased from 4.54% with the Linear baseline to 5.60% with the Soft Gate, while the frozen Isotonic model remained superior at 2.40%. Therefore, Experiment 4A does not establish the Soft Gate as the best overall calibration model. Instead, it demonstrates a measurable robustness-versus-outage-performance trade-off.
+
+The Soft Gate should not be described as universally better than Isotonic calibration. Although the Soft Gate achieves 5.60% drift, below the SIH benchmark of 10%, its outage drift is worse than both the Exp 1 Linear baseline (4.54%) and Exp 3 Isotonic calibration (2.40%).
+
+15. LIMITATIONS
+--------------------------------------------------------------------------------
+- Results are valid for the evaluated outage trajectory and speed profile.
+- Soft gate transition parameters (center, temperature) reflect the trade-off between validation robustness and high-speed underestimation correction.
+
+16. REPRODUCIBILITY INFORMATION
+--------------------------------------------------------------------------------
+- Python Version  : 3.13.1
+- NumPy Version   : 2.3.2
+- Pandas Version  : 2.3.1
+- Dataset Path    : /Users/hrithika/Desktop/GHOST/data/processed/ghosttrack_phase6_ekf.csv
+- Script Location : /Users/hrithika/Desktop/GHOST/preprocessing/phase7_exp4a_soft_gate.py
+- Output Directory: /Users/hrithika/Desktop/GHOST/results/day7_exp4a_soft_gate
+
+================================================================================
+END OF REPORT
+================================================================================

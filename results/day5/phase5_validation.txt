@@ -1,0 +1,67 @@
+================================================================================
+                    GHOSTTRACK PHASE 5.2 VALIDATION REPORT
+================================================================================
+
+1. DATASET & OUTAGE SPECIFICATION
+---------------------------------
+- Source Dataset: data/processed/ghosttrack_phase4_dead_reckoning.csv
+- Total Dataset Rows: 11,486
+- Sampling Frequency: 10 Hz (dt = 0.1s)
+- GNSS Outage Window: t = 30.0s to 90.0s (60.0 seconds / 600 steps)
+- Outage Distance Traveled: 1162.5 meters
+
+2. SPEED REFINEMENT METHODOLOGY (ANCHORED HYBRID SPEED)
+--------------------------------------------------------
+- Anchor Timestamp: t_anchor = 29.9s
+- Anchor Speed Fix (v0): 64.86 km/h (18.02 m/s)
+- Kinematic Equation: v_kinematic(t) = max(0, v_kinematic(t-1) + a_long_clean(t) * dt)
+- CNN Contribution: v_cnn from Phase 3 1D-CNN speed model
+- Hybrid Formulation: v_hybrid = alpha * v_kinematic + (1 - alpha) * v_cnn
+- Selected Alpha (Fixed): alpha = 0.85 (prioritizing kinematic integration while utilizing CNN baseline stabilization)
+- Out-of-Blackout Cleanliness: v_kinematic and v_hybrid reflect actual system speed tracking without ground-truth contamination outside blackout.
+
+3. HEADING REFINEMENT METHODOLOGY (PRE-OUTAGE ROAD VECTOR ANCHOR)
+------------------------------------------------------------------
+- Initial Heading Anchor (theta0): 4.71° (derived using last GNSS fix heading at t_anchor = 29.9s)
+- Anchor Road Segment: 'Atherstone Road' (Way #12, distance: 1.49m)
+- Vector Disambiguation: Selected direction matching pre-outage GNSS velocity vector (NO ground truth used)
+- Gyro Yaw Integration: theta(t) = (theta(t-1) + omega_z_corrected(t) * dt) mod 360°
+
+4. TOPOLOGY-AWARE CONTINUOUS DEAD RECKONING (PHASE 5.2 ENHANCEMENT)
+----------------------------------------------------------------------
+- Persistent Road State: Tracks active road segment (curr_way_idx = Way #12).
+- Topological Candidate Search: Restricts search to active way + adjacent connected ways within 35m buffer.
+- Switching Penalty: Penalizes switching away from active way to prevent unrealistic road jumps.
+- Continuous Feedback Loop: Each step initiates from P_matched(t-1), updating state for timestep t+1.
+
+5. STRICT GNSS DATA LEAKAGE PREVENTION AUDIT
+---------------------------------------------
+[PASS] Future GNSS during outage: NOT USED
+[PASS] Ground-truth position during outage: NOT USED
+[PASS] Ground-truth speed during outage: NOT USED
+[PASS] Ground-truth heading during outage: NOT USED
+[PASS] Road direction selection: Uses LAST GNSS FIX HEADING at 29.9s (NO ground truth)
+[PASS] Out-of-blackout speed columns: Cleaned (NO ground truth contamination)
+[PASS] Blackout-specific GT tuning: NOT USED
+[PASS] Ground truth used ONLY for post-implementation evaluation
+
+6. PERFORMANCE COMPARISON: PHASE 4 BASELINE vs PHASE 5.2 REFINED
+------------------------------------------------------------------
+Metric                         Phase 4 Baseline       Phase 5.2 Refined     SIH Target Requirement
+---------------------------------------------------------------------------------------------------
+Mean Position Error (m)                 300.41                213.07                < 5.0m
+RMSE Position Error (m)                 393.77                278.40                < 5.0m
+Maximum Position Error (m)              810.64                624.96                < 100.0m
+Final Position Error (m)                810.64                624.96                < 5.0m (over 50m)
+Outage Distance Traveled (m)            1162.5                1162.5                N/A
+Accumulated Drift (%)                    69.73%                53.76%               <= 10.0%
+Mean Error Improvement                Reference                  29.07%               N/A
+Drift Reduction Improvement           Reference                  22.91%               N/A
+
+7. SIH TARGET STATUS EVALUATION
+-------------------------------
+SIH Target Requirement: Positional Drift <= 10.0% of distance traveled during blackout.
+Measured Phase 5.2 Drift: 53.76% (Final Error: 624.96m over 1162.5m)
+Status: NOT YET ACHIEVED ⚠️ (Demonstrates continuous topology-aware feedback improvement, motivating Phase 6 EKF fusion refinement)
+
+PHASE 5.2 SUCCESS STATUS: COMPLETE ✅

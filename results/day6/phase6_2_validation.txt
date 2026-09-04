@@ -1,0 +1,75 @@
+================================================================================
+                    GHOSTTRACK PHASE 6.2 VALIDATION REPORT
+================================================================================
+
+1. DATASET & OUTAGE SPECIFICATION
+---------------------------------
+- Source Dataset: data/processed/ghosttrack_phase5_refined.csv
+- Total Dataset Rows: 11,486
+- Sampling Frequency: 10 Hz (dt = 0.1s)
+- GNSS Outage Window: t = 30.0s to 90.0s (60.0 seconds / 600 steps)
+- Outage Distance Traveled: 1162.5 meters
+
+2. EKF STATE DEFINITION
+-----------------------
+- 5-State Vector: X = [x, y, v, theta, b_gyro]^T
+  - x: Local East metric position (m) relative to P0
+  - y: Local North metric position (m) relative to P0
+  - v: Forward vehicle speed (m/s)
+  - theta: Vehicle heading (radians, 0 = North, CW)
+  - b_gyro: Online gyroscope yaw-rate bias (rad/s)
+
+3. PROCESS MODEL & SEPARATION OF LONGITUDINAL VS LATERAL CONSTRAINTS
+---------------------------------------------------------------------
+- Gyro Corrected: omega_corr = omega_z - b_gyro
+- Heading Propagation: theta_k = (theta_(k-1) + omega_corr * dt) mod 2pi
+- Speed Propagation: v_k = max(0, v_(k-1) + a_longitudinal * dt)
+- Position Propagation:
+  x_k = x_(k-1) + v_k * dt * sin(theta_k)
+  y_k = y_(k-1) + v_k * dt * cos(theta_k)
+- Longitudinal Separation: Longitudinal position propagates purely via velocity integration (v * dt).
+
+4. PROPER LATERAL ROAD CONSTRAINT (1D RESIDUAL ORTHOGONAL TO ROAD)
+--------------------------------------------------------------------
+- Normal Vector: n = [-u_y, u_x]^T for unit road segment tangent u
+- Measurement Model: h_lat(X) = n_x * (x - x_ref) + n_y * (y - y_ref) (Target residual: z_lat = 0)
+- Measurement Jacobian: H_lat = [n_x, n_y, 0, 0, 0]
+- Measurement Noise Covariance: R_lat = (5.0m)² (Realistic lateral map uncertainty)
+
+5. GYROSCOPE BIAS EVOLUTION TRAJECTORY
+--------------------------------------
+- Initial Estimate (t = 29.9s): 0.008001 rad/s (0.458 deg/s)
+- 30.0s: 0.007999 rad/s (0.458 deg/s)
+- 40.0s: -0.006913 rad/s (-0.396 deg/s)
+- 50.0s: -0.017702 rad/s (-1.014 deg/s)
+- 60.0s: -0.017684 rad/s (-1.013 deg/s)
+- 70.0s: -0.026277 rad/s (-1.506 deg/s)
+- 80.0s: -0.033680 rad/s (-1.930 deg/s)
+- 89.9s: -0.032983 rad/s (-1.890 deg/s)
+
+6. STRICT GNSS DATA LEAKAGE PREVENTION AUDIT
+---------------------------------------------
+[PASS] Future GNSS during blackout: NOT USED
+[PASS] Ground-truth position during blackout: evaluation reference only
+[PASS] Ground-truth speed during blackout: evaluation reference only
+[PASS] Ground-truth heading during blackout: evaluation reference only
+[PASS] Ground truth after outage start is used only for evaluation and never as an estimator input.
+
+7. PERFORMANCE COMPARISON: ALL PHASES
+-------------------------------------
+Metric                         Phase 4 Baseline       Phase 5.2 Refined      Phase 6 Soft EKF       Phase 6.1 Flawed EKF   Phase 6.2 Lateral EKF
+-----------------------------------------------------------------------------------------------------------------------------------------
+Mean Position Error (m)                 300.41                213.07                 88.37                106.73                 99.83
+RMSE Position Error (m)                 393.77                278.40                111.31                128.58                121.68
+Maximum Position Error (m)              810.64                624.96                217.67                237.71                228.11
+Final Position Error (m)                810.64                624.96                217.67                237.71                228.11
+Outage Distance Traveled (m)            1162.5                1162.5                1162.5                1162.5                1162.5
+Accumulated Drift (%)                    69.73%                53.76%                18.73%                20.45%                19.62%
+
+8. SCIENTIFIC COMPARATIVE INTERPRETATION
+----------------------------------------
+- Phase 6.1 (20.45% drift) was degraded by self-referential 2D projected point updates pulling longitudinal state.
+- Phase 6.2 (19.62% drift) mathematically fixes Phase 6.1 using 1D orthogonal lateral residuals (Mean error dropped from 106.73m -> 99.83m).
+- Phase 6 Soft Heading EKF (18.73% drift) remains the top-performing baseline because soft heading constraints allow the longitudinal velocity state to propagate cleanly along the road without spatial pinning.
+
+PHASE 6.2 SUCCESS STATUS: COMPLETE ✅

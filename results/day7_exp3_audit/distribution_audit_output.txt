@@ -1,0 +1,202 @@
+
+================================================================================
+ISOTONIC PREDICTION PERFORMANCE SUMMARY
+================================================================================
+
+TRAIN — CLEAN
+--------------------------------------------------------------------------------
+N              : 7419
+GT mean        : 69.26
+GT median      : 73.04
+GT std         : 20.43
+GT min         : 0.01
+GT max         : 98.44
+GT p5          : 23.42
+GT p25         : 60.37
+GT p75         : 83.55
+GT p95         : 93.13
+CNN mean       : 58.64
+CNN median     : 59.64
+CNN std        : 14.02
+CNN min        : 1.41
+CNN max        : 100.21
+CNN MAE        : 14.46
+CNN RMSE       : 17.27
+CNN bias       : -10.62
+ISO mean       : 69.26
+ISO MAE        : 8.87
+ISO RMSE       : 11.10
+ISO bias       : +0.00
+
+VALIDATION
+--------------------------------------------------------------------------------
+N              : 1718
+GT mean        : 45.52
+GT median      : 46.83
+GT std         : 18.93
+GT min         : 0.01
+GT max         : 85.77
+GT p5          : 0.09
+GT p25         : 37.23
+GT p75         : 59.57
+GT p95         : 71.66
+CNN mean       : 55.32
+CNN median     : 56.68
+CNN std        : 15.30
+CNN min        : 17.46
+CNN max        : 91.64
+CNN MAE        : 13.03
+CNN RMSE       : 15.99
+CNN bias       : +9.80
+ISO mean       : 63.78
+ISO MAE        : 19.23
+ISO RMSE       : 22.50
+ISO bias       : +18.26
+
+TEST
+--------------------------------------------------------------------------------
+N              : 1720
+GT mean        : 23.46
+GT median      : 27.76
+GT std         : 17.03
+GT min         : 0.01
+GT max         : 50.51
+GT p5          : 0.03
+GT p25         : 1.26
+GT p75         : 37.20
+GT p95         : 47.66
+CNN mean       : 53.94
+CNN median     : 50.98
+CNN std        : 22.37
+CNN min        : 18.41
+CNN max        : 123.02
+CNN MAE        : 30.59
+CNN RMSE       : 34.82
+CNN bias       : +30.47
+ISO mean       : 55.70
+ISO MAE        : 32.74
+ISO RMSE       : 36.98
+ISO bias       : +32.24
+
+GNSS OUTAGE
+--------------------------------------------------------------------------------
+N              : 600
+GT mean        : 69.75
+GT median      : 70.75
+GT std         : 4.69
+GT min         : 56.77
+GT max         : 77.98
+GT p5          : 58.81
+GT p25         : 68.00
+GT p75         : 72.41
+GT p95         : 76.34
+CNN mean       : 54.85
+CNN median     : 53.05
+CNN std        : 9.79
+CNN min        : 39.02
+CNN max        : 89.52
+CNN MAE        : 15.89
+CNN RMSE       : 17.13
+CNN bias       : -14.90
+ISO mean       : 67.68
+ISO MAE        : 7.17
+ISO RMSE       : 9.12
+ISO bias       : -2.06
+
+================================================================================
+STANDARDIZED MEAN DIFFERENCES — COHEN'S D
+================================================================================
+Train vs Validation : +1.178
+Train vs Test       : +2.309
+Train vs Outage     : -0.025
+Validation vs Outage : -1.470
+Test vs Outage      : -3.114
+
+================================================================================
+PREDICTION SUPPORT AUDIT
+================================================================================
+Train CNN range   : 1.4147 -> 100.2109
+Val CNN range     : 17.4576 -> 91.6392
+Test CNN range    : 18.4060 -> 123.0158
+Outage CNN range  : 39.0162 -> 89.5193
+Validation  : 0/1718 outside training support (0.00%)
+Test        : 51/1720 outside training support (2.97%)
+Outage      : 0/600 outside training support (0.00%)
+
+================================================================================
+ISOTONIC MAPPING
+================================================================================
+Number of isotonic breakpoints: 168
+First 20 breakpoints:
+CNN 1.4147 -> Calibrated 0.1190
+CNN 1.4209 -> Calibrated 0.2375
+CNN 1.4226 -> Calibrated 0.2375
+CNN 1.4287 -> Calibrated 0.4915
+CNN 4.9377 -> Calibrated 0.4915
+CNN 5.0627 -> Calibrated 0.5344
+CNN 6.0753 -> Calibrated 0.5344
+CNN 6.1279 -> Calibrated 0.7480
+CNN 6.7609 -> Calibrated 0.7480
+CNN 7.0571 -> Calibrated 0.8554
+CNN 9.3430 -> Calibrated 0.8554
+CNN 9.4633 -> Calibrated 1.4603
+CNN 10.2721 -> Calibrated 1.4603
+CNN 10.3926 -> Calibrated 1.5190
+CNN 10.4577 -> Calibrated 1.5190
+CNN 10.6730 -> Calibrated 1.8527
+CNN 10.9878 -> Calibrated 1.8527
+CNN 11.0337 -> Calibrated 1.9467
+CNN 11.7517 -> Calibrated 1.9467
+CNN 11.7535 -> Calibrated 2.2180
+...
+Last 20 breakpoints:
+CNN 70.7970 -> Calibrated 79.6278
+CNN 72.1949 -> Calibrated 79.6278
+CNN 72.1976 -> Calibrated 79.6892
+CNN 72.3489 -> Calibrated 79.6892
+CNN 72.3598 -> Calibrated 80.1284
+CNN 77.6309 -> Calibrated 80.1284
+CNN 77.6516 -> Calibrated 80.5419
+CNN 78.1143 -> Calibrated 80.5419
+CNN 78.1164 -> Calibrated 80.6393
+CNN 78.2621 -> Calibrated 80.6393
+CNN 78.3079 -> Calibrated 82.1191
+CNN 78.9773 -> Calibrated 82.1191
+CNN 79.0049 -> Calibrated 82.4856
+CNN 79.3512 -> Calibrated 82.4856
+CNN 79.3526 -> Calibrated 83.1790
+CNN 81.9975 -> Calibrated 83.1790
+CNN 82.0956 -> Calibrated 83.4048
+CNN 82.3308 -> Calibrated 83.4048
+CNN 82.3605 -> Calibrated 83.7976
+CNN 100.2109 -> Calibrated 83.7976
+
+================================================================================
+HIGH-SPEED REGIME ANALYSIS
+================================================================================
+
+TRAIN
+  0-40 | N=  476 | CNN MAE= 14.38 | ISO MAE=  9.39 | CNN bias= +14.30 | ISO bias=  +7.40
+ 40-50 | N=  665 | CNN MAE=  5.30 | ISO MAE= 11.26 | CNN bias=  +0.28 | ISO bias=  +8.39
+ 50-60 | N=  686 | CNN MAE=  8.42 | ISO MAE= 12.07 | CNN bias=  -2.18 | ISO bias=  +9.02
+ 60-70 | N= 1309 | CNN MAE=  9.65 | ISO MAE=  9.82 | CNN bias=  -6.53 | ISO bias=  +6.43
+ 70-80 | N= 1631 | CNN MAE= 13.47 | ISO MAE=  4.85 | CNN bias= -12.61 | ISO bias=  +0.60
+   80+ | N= 2652 | CNN MAE= 21.32 | ISO MAE=  9.36 | CNN bias= -20.81 | ISO bias=  -9.31
+
+VALIDATION
+  0-40 | N=  518 | CNN MAE= 16.30 | ISO MAE= 17.02 | CNN bias= +16.15 | ISO bias= +15.91
+ 40-50 | N=  457 | CNN MAE= 16.58 | ISO MAE= 28.57 | CNN bias= +16.35 | ISO bias= +28.47
+ 50-60 | N=  353 | CNN MAE=  9.42 | ISO MAE= 19.87 | CNN bias=  +7.21 | ISO bias= +19.78
+ 60-70 | N=  300 | CNN MAE=  7.45 | ISO MAE= 12.65 | CNN bias=  -2.68 | ISO bias= +10.75
+ 70-80 | N=   27 | CNN MAE=  3.49 | ISO MAE=  3.81 | CNN bias=  -2.96 | ISO bias=  +3.81
+   80+ | N=   63 | CNN MAE= 11.31 | ISO MAE=  4.08 | CNN bias= -10.50 | ISO bias=  -3.13
+
+TEST
+  0-40 | N= 1422 | CNN MAE= 32.95 | ISO MAE= 33.63 | CNN bias= +32.86 | ISO bias= +33.05
+ 40-50 | N=  283 | CNN MAE= 19.10 | ISO MAE= 28.42 | CNN bias= +18.86 | ISO bias= +28.29
+ 50-60 | N=   15 | CNN MAE= 23.37 | ISO MAE= 29.93 | CNN bias= +23.37 | ISO bias= +29.93
+
+OUTAGE
+ 50-60 | N=   40 | CNN MAE= 11.65 | ISO MAE=  5.92 | CNN bias= -11.65 | ISO bias=  -1.99
+ 60-70 | N=  191 | CNN MAE= 13.91 | ISO MAE=  8.26 | CNN bias= -13.82 | ISO bias=  -0.43
+ 70-80 | N=  369 | CNN MAE= 17.38 | ISO MAE=  6.75 | CNN bias= -15.81 | ISO bias=  -2.92

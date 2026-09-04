@@ -1,0 +1,63 @@
+================================================================================
+                    GHOSTTRACK PHASE 3 VALIDATION REPORT
+================================================================================
+
+1. DATASET & SLIDING WINDOW METRICS
+------------------------------------
+- Source Dataset: data/processed/ghosttrack_phase2_primary.csv
+- Total Input Rows: 11,486
+- Sampling Rate: 10 Hz (dt = 0.1s)
+- Window Size: 30 timesteps (3.0 seconds)
+- Total Windowed Samples: 11,457
+- Chronological Split: 70% Train (8,019), 15% Val (1,718), 15% Test (1,720)
+- Missing Values: 0
+
+2. FEATURE MATRIX & LEAKAGE AUDIT
+---------------------------------
+- Input Features Used (16): ['acc_x_clean', 'acc_y_clean', 'acc_z_clean', 'gyro_x_clean', 'gyro_y_clean', 'gyro_z_clean', 'longitudinal_acc', 'lateral_acc', 'vertical_acc', 'yaw_rate', 'acc_magnitude', 'gyro_magnitude', 'acc_mean', 'acc_std', 'gyro_mean', 'gyro_std']
+- Leakage Audit Confirmation:
+  [PASS] ground_truth_speed NOT used as input feature
+  [PASS] ground_truth_lat NOT used as input feature
+  [PASS] ground_truth_lon NOT used as input feature
+  [PASS] ground_truth_heading NOT used as input feature
+  [PASS] gnss_status NOT used as input feature
+  [PASS] Chronological split used (No random shuffling)
+  [PASS] StandardScaler fitted ONLY on training data
+
+3. MODEL ARCHITECTURE & TRAINING DETAILS
+----------------------------------------
+- Primary Model: Lightweight 1D CNN (PyTorch)
+  * Architecture: Conv1D(16->32, k=3) -> ReLU -> Conv1D(32->64, k=3) -> ReLU -> Conv1D(64->64, k=3) -> ReLU -> AdaptiveAvgPool1D(1) -> Dense(64->32) -> ReLU -> Dropout(0.2) -> Dense(32->1)
+  * Loss Function: Huber Loss (delta=1.0)
+  * Optimizer: Adam (lr=0.001)
+  * Batch Size: 32
+  * Best Validation Loss: 12.0151
+  * Saved Artifacts: models/ghosttrack_speed_cnn.pth, models/ghosttrack_speed_scaler.pkl
+
+4. MODEL EVALUATION METRICS ON UNTOUCHED TEST SET
+--------------------------------------------------
+Model                MAE (km/h)   RMSE (km/h)   R² Score   Max Error (km/h)
+-------------------------------------------------------------------------------
+Linear Regression         45.42        47.66      -6.829            99.55
+1D CNN (Primary)          30.59        34.82      -3.179            76.05
+Random Forest             30.50        35.72      -3.397            76.05
+
+5. GNSS BLACKOUT SPEED ESTIMATION
+---------------------------------
+- Blackout Outage Window: t = 30.0s to 90.0s (60.0s duration)
+- Number of Outage Steps: 600 timesteps
+- Outage Mean Ground Truth Speed: 69.75 km/h
+- Outage Mean CNN Predicted Speed: 54.85 km/h
+- Outage Speed MAE: 15.89 km/h
+
+6. LEAKAGE CHECKS CONFIRMATION
+------------------------------
+[PASS] No ground-truth speed used as input
+[PASS] No ground-truth position used as input
+[PASS] No ground-truth heading used as input
+[PASS] No future observations used
+[PASS] Chronological split used
+[PASS] Scaler fitted only on training data
+[PASS] Phase 2 dataset unchanged
+
+PHASE 3 SUCCESS STATUS: COMPLETE ✅
