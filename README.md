@@ -1,4 +1,4 @@
-# GHOST — GNSS-Free Hybrid Onboard Sensor Tracker
+# 👻 GHOST — GNSS-Free Hybrid Onboard Sensor Tracker
 
 **AI-ML Based Intelligent Dead Reckoning for Seamless Navigation**
 
