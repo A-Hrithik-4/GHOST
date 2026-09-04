@@ -6,18 +6,17 @@ import plotly.graph_objects as go
 
 st.set_page_config(
     page_title="GHOST — Intelligent GNSS-Free Fallback Navigation",
-    page_icon="🚘",
     layout="wide"
 )
 
-st.title("🚘 GHOST — GNSS-Free Hybrid Onboard Sensor Tracker")
+st.title("GHOST — GNSS-Free Hybrid Onboard Sensor Tracker")
 st.caption("Smart India Hackathon (SIH PS 26168) — ISRO | Phase 6 EKF Sensor Fusion Active Prototype")
 
 @st.cache_data
 def load_data():
-    p6_path = "/Users/hrithika/Desktop/GhostTrack/data/processed/ghosttrack_phase6_ekf.csv"
-    p5_path = "/Users/hrithika/Desktop/GhostTrack/data/processed/ghosttrack_phase5_refined.csv"
-    p4_path = "/Users/hrithika/Desktop/GhostTrack/data/processed/ghosttrack_phase4_dead_reckoning.csv"
+    p6_path = "/Users/hrithika/Desktop/GHOST/data/processed/ghosttrack_phase6_ekf.csv"
+    p5_path = "/Users/hrithika/Desktop/GHOST/data/processed/ghosttrack_phase5_refined.csv"
+    p4_path = "/Users/hrithika/Desktop/GHOST/data/processed/ghosttrack_phase4_dead_reckoning.csv"
     
     if os.path.exists(p6_path):
         df = pd.read_csv(p6_path)
@@ -26,12 +25,12 @@ def load_data():
     elif os.path.exists(p4_path):
         df = pd.read_csv(p4_path)
     else:
-        df = pd.read_csv("/Users/hrithika/Desktop/GhostTrack/data/processed/ghosttrack_phase2_primary.csv")
+        df = pd.read_csv("/Users/hrithika/Desktop/GHOST/data/processed/ghosttrack_phase2_primary.csv")
     return df
 
 df = load_data()
 
-st.sidebar.header("🕹️ Simulation & Model Controls")
+st.sidebar.header("Simulation & Model Controls")
 step_index = st.sidebar.slider(
     "Timeline Position (Time Step)",
     min_value=0,
@@ -55,11 +54,11 @@ c_status, c_time, c_drift, c_bias = st.columns([2, 1, 1, 1])
 
 with c_status:
     if gnss_state == 'AVAILABLE':
-        st.success("🛰️ **GNSS STATUS: AVAILABLE** (Signal Locked — 10 Hz Fix)")
+        st.success("**GNSS STATUS: AVAILABLE** (Signal Locked — 10 Hz Fix)")
     elif gnss_state == 'OUTAGE':
-        st.error("🚨 **GNSS STATUS: OUTAGE DETECTED** (GHOST Active — 5-State EKF + AI Speed + OSM Constraint)")
+        st.error("**GNSS STATUS: OUTAGE DETECTED** (GHOST Active — 5-State EKF + AI Speed + OSM Constraint)")
     else:
-        st.info("🔄 **GNSS STATUS: RESTORED** (Signal Re-aligned)")
+        st.info("**GNSS STATUS: RESTORED** (Signal Re-aligned)")
 
 with c_time:
     st.metric("Timestamp", f"{curr_time:.1f} s", delta=f"{curr_time/60:.2f} min")
@@ -84,7 +83,7 @@ with c_bias:
 map_col, panel_col = st.columns([2, 1])
 
 with map_col:
-    st.subheader("🗺️ Real-Time Navigation Map (OpenStreetMap Highway Geometry)")
+    st.subheader("Real-Time Navigation Map (OpenStreetMap Highway Geometry)")
     
     lats = df['ground_truth_lat'].values
     lons = df['ground_truth_lon'].values
@@ -154,7 +153,7 @@ with map_col:
     st.plotly_chart(fig, use_container_width=True)
 
 with panel_col:
-    st.subheader("📊 5-State EKF & Sensor Telemetry")
+    st.subheader("5-State EKF & Sensor Telemetry")
     
     m1, m2 = st.columns(2)
     with m1:
@@ -165,7 +164,7 @@ with panel_col:
         st.metric("EKF Heading State", f"{row['ekf_heading_deg']:.1f} °" if 'ekf_heading_deg' in row else f"{row['ground_truth_heading']:.1f} °")
         
     st.markdown("---")
-    st.subheader("🤖 Speed Fusion & AI Estimation")
+    st.subheader("Speed Fusion & AI Estimation")
     k1, k2 = st.columns(2)
     with k1:
         ekf_spd = row.get('ekf_speed_kmh', row['ground_truth_speed'])
@@ -174,7 +173,7 @@ with panel_col:
         cnn_spd = row.get('cnn_predicted_speed', row['ground_truth_speed'])
         st.metric("CNN AI Speed", f"{cnn_spd:.1f} km/h")
         
-    st.info("💡 **GHOST Active:** 5-State Extended Kalman Filter fusing IMU accelerations, online gyro bias tracking, 1D-CNN speed updates, and circular OpenStreetMap road heading constraints.")
+    st.info("**GHOST Active:** 5-State Extended Kalman Filter fusing IMU accelerations, online gyro bias tracking, 1D-CNN speed updates, and circular OpenStreetMap road heading constraints.")
 
 st.markdown("---")
 st.caption("GHOST — GNSS-Free Hybrid Onboard Sensor Tracker | Developed for SIH ISRO PS 26168")

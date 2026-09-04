@@ -1,4 +1,4 @@
-# 👻 GHOST — GNSS-Free Hybrid Onboard Sensor Tracker
+# GHOST — GNSS-Free Hybrid Onboard Sensor Tracker
 
 **AI-ML Based Intelligent Dead Reckoning for Seamless Navigation**
 
@@ -12,7 +12,7 @@ The system combines a 1D-CNN speed estimator, leakage-free speed calibration, an
 
 ---
 
-## 🎯 Problem
+## Problem
 
 GNSS/GPS signals can become unavailable or unreliable in environments such as:
 * Tunnels
@@ -29,7 +29,7 @@ Conventional navigation systems experience rapidly increasing positional error o
 
 ---
 
-## 💡 GHOST Solution
+## GHOST Solution
 
 GHOST operates as a hybrid navigation pipeline:
 
@@ -80,7 +80,7 @@ GHOST operates as a hybrid navigation pipeline:
 
 ---
 
-## 🧠 Core Architecture
+## Core Architecture
 
 GHOST uses a five-state Extended Kalman Filter:
 
@@ -100,7 +100,7 @@ During a GNSS outage, the EKF continuously propagates the vehicle state using in
 
 ---
 
-## 🤖 Machine Learning Component
+## Machine Learning Component
 
 ### 1D-CNN Speed Estimator
 The ML component estimates vehicle speed from onboard inertial measurements. The model learns the relationship between IMU-derived temporal patterns and vehicle velocity. Instead of depending on an OBD-II speedometer feed, GHOST estimates speed directly from the available sensor stream.
@@ -110,7 +110,7 @@ The raw CNN exhibited systematic speed-regime bias, particularly during higher-s
 
 ---
 
-## 🧪 Development & Experiment Progression
+## Development & Experiment Progression
 
 GHOST was developed through multiple experimental phases:
 
@@ -120,12 +120,12 @@ GHOST was developed through multiple experimental phases:
 | **Phase 5.2** | Improved preprocessing / fusion | 53.76% | Intermediate |
 | **Phase 6** | 1D-CNN + EKF + OSM constraint | 18.73% | Uncalibrated |
 | **Experiment 1** | Leakage-free linear speed calibration | 4.54% | Calibrated |
-| **Experiment 3** | **Isotonic speed calibration** | **2.40%** | **🏆 Best Result** |
+| **Experiment 3** | **Isotonic speed calibration** | **2.40%** | **Best Result** |
 | **Experiment 4A** | Soft regime-gated calibration | 5.60% | Variant |
 
 ```text
 Improvement Progression:
-69.73% (Raw DR) ──► 53.76% ──► 18.73% (Raw CNN) ──► 4.54% (Linear) ──► 2.40% (Isotonic) 🏆
+69.73% (Raw DR) ──► 53.76% ──► 18.73% (Raw CNN) ──► 4.54% (Linear) ──► 2.40% (Isotonic)
 ```
 
 The final demonstrated configuration is:
@@ -133,7 +133,7 @@ The final demonstrated configuration is:
 
 ---
 
-## 🏆 Final Demonstrated Result
+## Final Demonstrated Result
 
 GHOST was evaluated during a 60-second complete GNSS outage:
 
@@ -145,7 +145,7 @@ GHOST was evaluated during a 60-second complete GNSS outage:
 | **Final position error** | 27.95 m |
 | **Positional drift** | **2.40%** |
 | **SIH benchmark limit** | **≤ 10.00%** |
-| **Benchmark status** | **PASS ✅** |
+| **Benchmark status** | **PASS** |
 
 ### Drift Calculation
 $$\text{Positional Drift} = \frac{\text{Final Position Error}}{\text{Distance Traveled}} \times 100 = \frac{27.95\text{ m}}{1162.50\text{ m}} \times 100 \approx \mathbf{2.40\%}$$
@@ -157,7 +157,7 @@ The demonstrated drift is **76% below** the maximum allowable 10% drift limit fo
 
 ---
 
-## 📐 Position Error Decomposition
+## Position Error Decomposition
 
 The final position error decomposes into along-track and cross-track components:
 
@@ -172,7 +172,7 @@ $$\sqrt{(-1.16)^2 + (-27.93)^2} = \sqrt{1.3456 + 780.0849} = \sqrt{781.4305} \ap
 
 ---
 
-## 🔬 Validation & Leakage Audit
+## Validation & Leakage Audit
 
 The final model evaluation was audited to ensure that the GNSS outage interval was not used during calibration fitting.
 
@@ -185,30 +185,30 @@ The final model evaluation was audited to ensure that the GNSS outage interval w
 
 | Audit Check | Status |
 | :--- | :---: |
-| **Leakage audit** | ✅ PASS |
-| **Parameter consistency** | ✅ PASS |
-| **Mathematical drift verification** | ✅ PASS |
-| **Isotonic monotonicity** | ✅ PASS |
-| **Artifact verification** | ✅ PASS |
-| **SIH benchmark** | ✅ PASS |
-| **Technical readiness** | ✅ PASS |
+| **Leakage audit** | PASS |
+| **Parameter consistency** | PASS |
+| **Mathematical drift verification** | PASS |
+| **Isotonic monotonicity** | PASS |
+| **Artifact verification** | PASS |
+| **SIH benchmark** | PASS |
+| **Technical readiness** | PASS |
 
 ---
 
-## 📊 Model Comparison
+## Model Comparison
 
 | Configuration | Final Error | Drift | Status |
 | :--- | :---: | :---: | :---: |
-| **Phase 6 Raw CNN** | 217.67 m | 18.72% | ❌ FAIL |
-| **Experiment 1 Linear** | 52.80 m | 4.54% | ✅ PASS |
-| **Experiment 4A Soft Gate** | 65.09 m | 5.60% | ✅ PASS |
-| **Experiment 3 Isotonic** | **27.95 m** | **2.40%** | **🏆 PASS** |
+| **Phase 6 Raw CNN** | 217.67 m | 18.72% | FAIL |
+| **Experiment 1 Linear** | 52.80 m | 4.54% | PASS |
+| **Experiment 4A Soft Gate** | 65.09 m | 5.60% | PASS |
+| **Experiment 3 Isotonic** | **27.95 m** | **2.40%** | **PASS** |
 
 *Note: The 2.40% result is the demonstrated result on the evaluated outage trajectory.*
 
 ---
 
-## 🗺️ Dataset
+## Dataset
 
 The project uses vehicle trajectory and inertial sensor data for model development and evaluation.
 
@@ -217,7 +217,7 @@ The project uses vehicle trajectory and inertial sensor data for model developme
 
 ---
 
-## 🧹 Data Processing Pipeline
+## Data Processing Pipeline
 
 ```text
 Raw Sensor Logs
@@ -252,7 +252,7 @@ Trajectory Evaluation
 
 ---
 
-## 🛰️ GNSS Outage Strategy
+## GNSS Outage Strategy
 
 ```text
 GNSS AVAILABLE                    GNSS UNAVAILABLE
@@ -277,7 +277,7 @@ Vehicle State                      Speed Calibration
 
 ---
 
-## 🖥️ Interactive 3D Prototype
+## Interactive 3D Prototype
 
 GHOST includes an interactive web-based visualization demonstrating system behavior in real time:
 * Vehicle movement & 3D GLTF models
@@ -294,7 +294,7 @@ visualization_3d/
 
 ---
 
-## 🏗️ Repository Structure
+## Repository Structure
 
 ```text
 GHOST/
@@ -315,7 +315,7 @@ GHOST/
 
 ---
 
-## ⚙️ Technology Stack
+## Technology Stack
 
 | Layer | Technology |
 | :--- | :--- |
@@ -330,7 +330,7 @@ GHOST/
 
 ---
 
-## 🚀 Running the 3D Prototype
+## Running the 3D Prototype
 
 1. Navigate to the visualization directory:
    ```bash
@@ -351,19 +351,19 @@ GHOST/
 
 ---
 
-## 📈 Project Status
+## Project Status
 
 | Metric / Check | Value / Status |
 | :--- | :--- |
-| **Current Phase** | Phase 7 — Final Validation Complete ✅ |
+| **Current Phase** | Phase 7 — Final Validation Complete |
 | **Final Architecture** | 1D-CNN + Isotonic Calibration + 5-State EKF + OSM Constraint |
 | **Demonstrated Drift** | **2.40%** |
 | **SIH Requirement** | **≤ 10.00%** |
-| **Benchmark Status** | **SIH BENCHMARK: PASS ✅** |
+| **Benchmark Status** | **SIH BENCHMARK: PASS** |
 
 ---
 
-## ⚠️ Limitations
+## Limitations
 
 The current results represent the best demonstrated performance on the evaluated GNSS outage trajectory:
 * GHOST is designed as a dead-reckoning continuity system during temporary outages, not a full replacement for GNSS under all conditions.
@@ -371,11 +371,11 @@ The current results represent the best demonstrated performance on the evaluated
 
 ---
 
-## 📌 Project Information
+## Project Information
 
 * **Project**: GHOST — GNSS-Free Hybrid Onboard Sensor Tracker
 * **Domain**: AI / ML · Intelligent Transportation · Sensor Fusion · Navigation
 * **SIH Problem Statement**: 26168
 * **Organization**: ISRO / Department of Space
 * **Final Demonstrated Drift**: **2.40%** (Benchmark: ≤10%)
-* **Status**: **PASS ✅**
+* **Status**: **PASS**
