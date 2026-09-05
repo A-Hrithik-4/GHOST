@@ -2,26 +2,30 @@ import React, { useState, useRef } from 'react';
 import ProjectNavbar from './ProjectNavbar';
 import ProjectSidebar from './ProjectSidebar';
 import {
-  OverviewSection,
-  ProblemSection,
-  ApproachSection,
-  HowItWorksSection,
-  ArchitectureSection,
-  MLExperimentsSection,
-  ResultsSection,
-  ErrorAnalysisSection,
-  MethodologySection,
+  MissionOverviewSection,
+  ProblemStatementSection,
+  WhyGhostSection,
+  SystemArchitectureSection,
+  NavigationMathSection,
+  SensorPipelineSection,
+  MlPipelineSection,
+  MlAlgorithmSection,
+  SpeedCalibrationSection,
+  EkfNavigationSection,
+  RoadConstraintSection,
+  ExperimentsSection,
   FinalModelSection,
+  ResultsBenchmarkSection,
+  ErrorAnalysisSection,
+  DatasetMethodologySection,
+  ImplementationCodeSection,
+  TechnologyStackSection,
   LimitationsSection,
-  TechStackSection
+  FutureScopeSection,
+  PrototypePageSection,
+  TeamSection
 } from './ProjectSections';
 import '../styles/project.css';
-
-/**
- * ProjectModeContainer.jsx
- * 
- * Main container for GHOST Project Mode / Technical Dashboard.
- */
 
 export default function ProjectModeContainer({ activeMode, onSwitchMode }) {
   const [activeSection, setActiveSection] = useState('overview');
@@ -34,7 +38,6 @@ export default function ProjectModeContainer({ activeMode, onSwitchMode }) {
     }
   };
 
-  // Switch back to prototype handler
   const handleSwitchToPrototype = () => {
     onSwitchMode('prototype');
   };
@@ -42,44 +45,59 @@ export default function ProjectModeContainer({ activeMode, onSwitchMode }) {
   const renderSectionContent = () => {
     switch (activeSection) {
       case 'overview':
-        return <OverviewSection onSwitchToPrototype={handleSwitchToPrototype} />;
+        return <MissionOverviewSection onSwitchToPrototype={handleSwitchToPrototype} />;
       case 'problem':
-        return <ProblemSection />;
-      case 'approach':
-        return <ApproachSection />;
-      case 'how_it_works':
-        return <HowItWorksSection />;
+        return <ProblemStatementSection />;
+      case 'why_ghost':
+        return <WhyGhostSection />;
       case 'architecture':
-        return <ArchitectureSection />;
+        return <SystemArchitectureSection />;
+      case 'math':
+        return <NavigationMathSection />;
+      case 'sensor_pipeline':
+        return <SensorPipelineSection />;
+      case 'ml_pipeline':
+        return <MlPipelineSection />;
+      case 'ml_algorithm':
+        return <MlAlgorithmSection />;
+      case 'speed_calibration':
+        return <SpeedCalibrationSection />;
+      case 'ekf_navigation':
+        return <EkfNavigationSection />;
+      case 'road_constraint':
+        return <RoadConstraintSection />;
       case 'experiments':
-        return <MLExperimentsSection />;
-      case 'results':
-        return <ResultsSection />;
-      case 'error_analysis':
-        return <ErrorAnalysisSection />;
-      case 'methodology':
-        return <MethodologySection />;
+        return <ExperimentsSection />;
       case 'final_model':
         return <FinalModelSection />;
+      case 'results':
+        return <ResultsBenchmarkSection />;
+      case 'error_analysis':
+        return <ErrorAnalysisSection />;
+      case 'dataset':
+        return <DatasetMethodologySection />;
+      case 'code':
+        return <ImplementationCodeSection />;
+      case 'tech_stack':
+        return <TechnologyStackSection />;
       case 'limitations':
         return <LimitationsSection />;
-      case 'tech_stack':
+      case 'future_scope':
+        return <FutureScopeSection />;
       case 'prototype':
-        return <TechStackSection onSwitchToPrototype={handleSwitchToPrototype} />;
+        return <PrototypePageSection onSwitchToPrototype={handleSwitchToPrototype} />;
+      case 'team':
+        return <TeamSection />;
       default:
-        return <OverviewSection onSwitchToPrototype={handleSwitchToPrototype} />;
+        return <MissionOverviewSection onSwitchToPrototype={handleSwitchToPrototype} />;
     }
   };
 
   return (
     <div className="project-container">
-      {/* Top Navbar with Mode Switcher */}
       <ProjectNavbar activeMode={activeMode} onSwitchMode={onSwitchMode} />
-
-      {/* Main Body: Fixed Left Sidebar + Scrollable Technical Content */}
       <div className="project-body">
         <ProjectSidebar activeSection={activeSection} onSelectSection={handleSelectSection} />
-
         <main className="project-content" ref={contentRef}>
           {renderSectionContent()}
         </main>
