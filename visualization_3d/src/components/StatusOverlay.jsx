@@ -1,4 +1,5 @@
 import React from 'react';
+import { Layers, FileText } from 'lucide-react';
 
 /**
  * StatusOverlay.jsx
@@ -71,13 +72,15 @@ export default function StatusOverlay({ sample, currentTime, activeMode, onSwitc
                 className={`mode-btn ${activeMode === 'prototype' ? 'active-proto' : ''}`}
                 onClick={() => onSwitchMode('prototype')}
               >
-                Prototype
+                <Layers size={13} />
+                <span>Prototype</span>
               </button>
               <button
                 className={`mode-btn ${activeMode === 'project' ? 'active-project' : ''}`}
                 onClick={() => onSwitchMode('project')}
               >
-                Project
+                <FileText size={13} />
+                <span>Project</span>
               </button>
             </div>
           )}

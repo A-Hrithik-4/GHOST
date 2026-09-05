@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Layers } from 'lucide-react';
 import CodeViewer from './CodeViewer';
 
 // Reusable Footer Component across all Project Mode pages
@@ -36,10 +37,14 @@ export function FinalProjectFooter({ onSwitchToPrototype }) {
             fontWeight: '800',
             fontFamily: 'JetBrains Mono, monospace',
             fontSize: '11px',
-            cursor: 'pointer'
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px'
           }}
         >
-          🚗 OPEN PROTOTYPE
+          <Layers size={13} />
+          <span>OPEN PROTOTYPE</span>
         </button>
       </div>
     </footer>

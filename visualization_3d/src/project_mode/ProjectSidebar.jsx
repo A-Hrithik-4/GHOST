@@ -1,4 +1,5 @@
 import React from 'react';
+import { Layers } from 'lucide-react';
 
 const SIDEBAR_ITEMS = [
   { id: 'overview', num: '01', title: 'OVERVIEW' },
@@ -68,7 +69,8 @@ export default function ProjectSidebar({ activeSection, onSelectSection, onSwitc
             boxShadow: '0 2px 4px rgba(200, 138, 0, 0.08)'
           }}
         >
-          <span>🚗 OPEN PROTOTYPE</span>
+          <Layers size={13} />
+          <span>OPEN PROTOTYPE</span>
         </button>
       </div>
     </aside>

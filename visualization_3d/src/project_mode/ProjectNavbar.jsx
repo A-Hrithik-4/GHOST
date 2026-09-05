@@ -1,4 +1,5 @@
 import React from 'react';
+import { FileText, Layers } from 'lucide-react';
 
 export default function ProjectNavbar({ activeMode, onSwitchMode }) {
   return (
@@ -25,13 +26,15 @@ export default function ProjectNavbar({ activeMode, onSwitchMode }) {
             className={`mode-btn ${activeMode === 'project' ? 'active-project' : ''}`}
             onClick={() => onSwitchMode('project')}
           >
-            📊 Project
+            <FileText size={13} />
+            <span>Project</span>
           </button>
           <button 
             className={`mode-btn ${activeMode === 'prototype' ? 'active-proto' : ''}`}
             onClick={() => onSwitchMode('prototype')}
           >
-            🚗 Prototype
+            <Layers size={13} />
+            <span>Prototype</span>
           </button>
         </div>
       </div>

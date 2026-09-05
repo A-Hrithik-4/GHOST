@@ -1,4 +1,5 @@
 import React from 'react';
+import { Play, Pause, RotateCcw, AlertTriangle, CheckCircle2 } from 'lucide-react';
 
 /**
  * SimulationControls.jsx
@@ -26,11 +27,13 @@ export default function SimulationControls({
           className={`btn-control ${isPlaying ? 'btn-pause' : 'btn-play'}`}
           onClick={onTogglePlay}
         >
-          {isPlaying ? 'Ⅱ PAUSE' : '▶ PLAY'}
+          {isPlaying ? <Pause size={13} /> : <Play size={13} />}
+          <span>{isPlaying ? 'PAUSE' : 'PLAY'}</span>
         </button>
 
         <button className="btn-control btn-reset" onClick={onReset}>
-          ↺ RESET
+          <RotateCcw size={13} />
+          <span>RESET</span>
         </button>
       </div>
 
@@ -43,9 +46,15 @@ export default function SimulationControls({
             <span className="time-max"> / {maxTime.toFixed(0)} s</span>
           </div>
           {isOutage ? (
-            <span className="outage-active-pill">🚨 60s GNSS OUTAGE ACTIVE (t = 30.0s — 90.0s)</span>
+            <span className="outage-active-pill" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+              <AlertTriangle size={13} />
+              <span>60s GNSS OUTAGE ACTIVE (t = 30.0s — 90.0s)</span>
+            </span>
           ) : (
-            <span className="gnss-ok-pill">🛰️ GNSS SIGNAL LOCKED</span>
+            <span className="gnss-ok-pill" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+              <CheckCircle2 size={13} />
+              <span>GNSS SIGNAL LOCKED</span>
+            </span>
           )}
         </div>
 
@@ -69,10 +78,10 @@ export default function SimulationControls({
           <div className="timeline-ticks-row">
             <span className="tick-start">0s</span>
             <span className="tick-marker tick-outage-start" style={{ left: '25%' }}>
-              ▲ 30s OUTAGE START
+              30s OUTAGE START
             </span>
             <span className="tick-marker tick-outage-end" style={{ left: '75%' }}>
-              ▲ 90s GNSS RESTORED
+              90s GNSS RESTORED
             </span>
             <span className="tick-end">120s</span>
           </div>
