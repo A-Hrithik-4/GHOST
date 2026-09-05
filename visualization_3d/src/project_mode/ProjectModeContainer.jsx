@@ -2,27 +2,36 @@ import React, { useState, useRef } from 'react';
 import ProjectNavbar from './ProjectNavbar';
 import ProjectSidebar from './ProjectSidebar';
 import {
-  MissionOverviewSection,
+  ProjectOverviewSection,
   ProblemStatementSection,
-  WhyGhostSection,
+  ObjectivesRequirementsSection,
+  ProposedSolutionSection,
   SystemArchitectureSection,
-  NavigationMathSection,
-  SensorPipelineSection,
-  MlPipelineSection,
-  MlAlgorithmSection,
-  SpeedCalibrationSection,
+  EndToEndWorkflowSection,
+  SensorInputsSection,
+  DataProcessingSection,
+  FeatureEngineeringSection,
+  DeadReckoningSection,
   EkfNavigationSection,
-  RoadConstraintSection,
-  ExperimentsSection,
+  RoadHeadingConstraintSection,
+  MlPipelineSection,
+  DatasetForMlSection,
+  CnnSpeedEstimatorSection,
+  SpeedCalibrationSection,
+  LeakagePreventionSection,
+  ExperimentSetupSection,
+  ModelComparisonSection,
   FinalModelSection,
   ResultsBenchmarkSection,
   ErrorAnalysisSection,
-  DatasetMethodologySection,
-  ImplementationCodeSection,
+  ProjectStructureSection,
+  AlgorithmImplementationSection,
+  CodeExplorerSection,
   TechnologyStackSection,
+  ValidationAuditSection,
   LimitationsSection,
   FutureScopeSection,
-  PrototypePageSection,
+  InteractivePrototypeSection,
   TeamSection
 } from './ProjectSections';
 import '../styles/project.css';
@@ -45,51 +54,69 @@ export default function ProjectModeContainer({ activeMode, onSwitchMode }) {
   const renderSectionContent = () => {
     switch (activeSection) {
       case 'overview':
-        return <MissionOverviewSection onSwitchToPrototype={handleSwitchToPrototype} />;
+        return <ProjectOverviewSection />;
       case 'problem':
         return <ProblemStatementSection />;
-      case 'why_ghost':
-        return <WhyGhostSection />;
+      case 'objectives':
+        return <ObjectivesRequirementsSection />;
+      case 'solution':
+        return <ProposedSolutionSection />;
       case 'architecture':
         return <SystemArchitectureSection />;
-      case 'math':
-        return <NavigationMathSection />;
-      case 'sensor_pipeline':
-        return <SensorPipelineSection />;
-      case 'ml_pipeline':
-        return <MlPipelineSection />;
-      case 'ml_algorithm':
-        return <MlAlgorithmSection />;
-      case 'speed_calibration':
-        return <SpeedCalibrationSection />;
+      case 'workflow':
+        return <EndToEndWorkflowSection />;
+      case 'sensor_inputs':
+        return <SensorInputsSection />;
+      case 'data_processing':
+        return <DataProcessingSection />;
+      case 'feature_engineering':
+        return <FeatureEngineeringSection />;
+      case 'dead_reckoning':
+        return <DeadReckoningSection />;
       case 'ekf_navigation':
         return <EkfNavigationSection />;
       case 'road_constraint':
-        return <RoadConstraintSection />;
-      case 'experiments':
-        return <ExperimentsSection />;
+        return <RoadHeadingConstraintSection />;
+      case 'ml_pipeline':
+        return <MlPipelineSection />;
+      case 'ml_dataset':
+        return <DatasetForMlSection />;
+      case 'ml_estimator':
+        return <CnnSpeedEstimatorSection />;
+      case 'speed_calibration':
+        return <SpeedCalibrationSection />;
+      case 'leakage_prevention':
+        return <LeakagePreventionSection />;
+      case 'exp_setup':
+        return <ExperimentSetupSection />;
+      case 'model_comparison':
+        return <ModelComparisonSection />;
       case 'final_model':
         return <FinalModelSection />;
-      case 'results':
+      case 'results_benchmark':
         return <ResultsBenchmarkSection />;
       case 'error_analysis':
         return <ErrorAnalysisSection />;
-      case 'dataset':
-        return <DatasetMethodologySection />;
-      case 'code':
-        return <ImplementationCodeSection />;
+      case 'project_structure':
+        return <ProjectStructureSection />;
+      case 'algo_impl':
+        return <AlgorithmImplementationSection />;
+      case 'code_explorer':
+        return <CodeExplorerSection />;
       case 'tech_stack':
         return <TechnologyStackSection />;
+      case 'validation_audit':
+        return <ValidationAuditSection />;
       case 'limitations':
         return <LimitationsSection />;
       case 'future_scope':
         return <FutureScopeSection />;
       case 'prototype':
-        return <PrototypePageSection onSwitchToPrototype={handleSwitchToPrototype} />;
+        return <InteractivePrototypeSection onSwitchToPrototype={handleSwitchToPrototype} />;
       case 'team':
         return <TeamSection />;
       default:
-        return <MissionOverviewSection onSwitchToPrototype={handleSwitchToPrototype} />;
+        return <ProjectOverviewSection />;
     }
   };
 
