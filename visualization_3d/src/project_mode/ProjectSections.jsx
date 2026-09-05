@@ -430,55 +430,74 @@ export function DataFeatureEngineeringSection({ onSwitchToPrototype }) {
       <div className="section-header">
         <span className="section-tag">05 · DATA & FEATURE ENGINEERING</span>
         <h2 className="section-title">DATA & FEATURE ENGINEERING</h2>
+        <div className="section-subtitle">IO-VNBD Dataset (Vfa01 & Vta2 sequences) with 28 engineered matrix columns.</div>
       </div>
 
       {/* DATASET SUMMARY */}
       <div className="grid-4-cols" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '14px', marginBottom: '24px' }}>
-        <div className="metric-box">
-          <span className="metric-val mono" style={{ fontSize: '26px', fontWeight: '900', color: 'var(--graphite-dark)' }}>50,000</span>
-          <span className="metric-lbl" style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>ORIGINAL RECORDS</span>
-        </div>
-        <div className="metric-box">
-          <span className="metric-val mono" style={{ fontSize: '26px', fontWeight: '900', color: 'var(--graphite-dark)' }}>50</span>
-          <span className="metric-lbl" style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>TRACKS</span>
-        </div>
         <div className="metric-box highlighted">
-          <span className="metric-val mono" style={{ fontSize: '26px', fontWeight: '900', color: 'var(--amber-primary)' }}>49,950</span>
-          <span className="metric-lbl" style={{ fontSize: '11px', color: 'var(--graphite-dark)' }}>ML-READY RECORDS</span>
+          <span className="metric-val mono" style={{ fontSize: '26px', fontWeight: '900', color: 'var(--amber-primary)' }}>11,486</span>
+          <span className="metric-lbl" style={{ fontSize: '11px', color: 'var(--graphite-dark)' }}>Vfa01 PRIMARY ROWS</span>
         </div>
         <div className="metric-box">
-          <span className="metric-val mono" style={{ fontSize: '26px', fontWeight: '900', color: 'var(--graphite-dark)' }}>15</span>
-          <span className="metric-lbl" style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>FEATURES USED</span>
+          <span className="metric-val mono" style={{ fontSize: '26px', fontWeight: '900', color: 'var(--graphite-dark)' }}>10,991</span>
+          <span className="metric-lbl" style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Vta2 BACKUP ROWS</span>
+        </div>
+        <div className="metric-box">
+          <span className="metric-val mono" style={{ fontSize: '26px', fontWeight: '900', color: 'var(--graphite-dark)' }}>28</span>
+          <span className="metric-lbl" style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>ENGINEERED COLUMNS</span>
+        </div>
+        <div className="metric-box">
+          <span className="metric-val mono" style={{ fontSize: '26px', fontWeight: '900', color: 'var(--graphite-dark)' }}>10 Hz</span>
+          <span className="metric-lbl" style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>SAMPLING RATE</span>
         </div>
       </div>
 
-      {/* WHY 49,950? */}
+      {/* DATASET STRUCTURE */}
       <div className="content-card" style={{ marginBottom: '24px' }}>
-        <h3 style={{ fontSize: '15px', fontWeight: '800', color: 'var(--graphite-dark)' }}>WHY 50 RECORDS ARE REMOVED</h3>
+        <h3 style={{ fontSize: '15px', fontWeight: '800', color: 'var(--graphite-dark)' }}>IO-VNBD DATASET SEQUENCES</h3>
         <p style={{ marginTop: '8px', fontSize: '13.5px', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
-          Each of the 50 tracks has a first observation. The first observation does not contain previous history required to calculate derived temporal features such as: RangeRate, HeadingRate, VelocityChange, PositionChange.
+          The GHOST development and evaluation pipeline uses real driving sequences from the IO-VNBD dataset:
         </p>
-        <div style={{ marginTop: '12px', padding: '10px 14px', background: 'var(--bg-main)', border: '1px solid var(--border-light)', borderRadius: '4px', fontFamily: 'JetBrains Mono, monospace', fontSize: '13px', color: 'var(--graphite-dark)' }}>
-          50,000 total records − 50 first observations = <strong>49,950 ML-ready records</strong>
-        </div>
+        <ul style={{ paddingLeft: '18px', marginTop: '8px', fontSize: '13px', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+          <li><strong>Vfa01 Sequence:</strong> 11,486 rows (19.14 minutes of continuous 10 Hz driving data).</li>
+          <li><strong>Vta2 Sequence:</strong> 10,991 rows (18.32 minutes of continuous 10 Hz driving data).</li>
+        </ul>
+        <p style={{ marginTop: '8px', fontSize: '12.5px', color: 'var(--text-muted)', fontStyle: 'italic' }}>
+          The sequences represent continuous real-world driving sessions rather than synthetic multi-track artificial splits.
+        </p>
       </div>
 
       {/* FEATURE ENGINEERING */}
       <div className="content-card" style={{ marginBottom: '24px' }}>
-        <h3 style={{ fontSize: '15px', fontWeight: '800', color: 'var(--graphite-dark)', marginBottom: '14px' }}>ENGINEERED FEATURES (15 SENSOR-DERIVED FEATURES)</h3>
+        <h3 style={{ fontSize: '15px', fontWeight: '800', color: 'var(--graphite-dark)', marginBottom: '14px' }}>DERIVED FEATURE MATRIX (28 TOTAL COLUMNS)</h3>
         
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '14px' }}>
           <div style={{ background: 'var(--bg-main)', padding: '12px', borderRadius: '6px', border: '1px solid var(--border-light)' }}>
-            <span className="mono" style={{ fontSize: '11px', fontWeight: '800', color: 'var(--amber-primary)' }}>ACCELERATION (9)</span>
+            <span className="mono" style={{ fontSize: '11px', fontWeight: '800', color: 'var(--amber-primary)' }}>RAW SIGNALS (6)</span>
             <div className="mono" style={{ fontSize: '12px', color: 'var(--graphite-dark)', marginTop: '6px', lineHeight: '1.6' }}>
-              acc_x_clean, acc_y_clean, acc_z_clean, longitudinal_acc, lateral_acc, vertical_acc, acc_magnitude, acc_mean, acc_std
+              acc_x, acc_y, acc_z, gyro_x, gyro_y, gyro_z
             </div>
           </div>
 
           <div style={{ background: 'var(--bg-main)', padding: '12px', borderRadius: '6px', border: '1px solid var(--border-light)' }}>
-            <span className="mono" style={{ fontSize: '11px', fontWeight: '800', color: 'var(--amber-primary)' }}>HEADING & ROTATION (6)</span>
+            <span className="mono" style={{ fontSize: '11px', fontWeight: '800', color: 'var(--amber-primary)' }}>FILTERED SIGNALS (6)</span>
             <div className="mono" style={{ fontSize: '12px', color: 'var(--graphite-dark)', marginTop: '6px', lineHeight: '1.6' }}>
-              gyro_x_clean, gyro_y_clean, gyro_z_clean, yaw_rate, gyro_magnitude, gyro_std
+              acc_x_clean, acc_y_clean, acc_z_clean, gyro_x_clean, gyro_y_clean, gyro_z_clean
+            </div>
+          </div>
+
+          <div style={{ background: 'var(--bg-main)', padding: '12px', borderRadius: '6px', border: '1px solid var(--border-light)' }}>
+            <span className="mono" style={{ fontSize: '11px', fontWeight: '800', color: 'var(--amber-primary)' }}>VEHICLE FRAME & MAGNITUDES (6)</span>
+            <div className="mono" style={{ fontSize: '12px', color: 'var(--graphite-dark)', marginTop: '6px', lineHeight: '1.6' }}>
+              longitudinal_acc, lateral_acc, vertical_acc, yaw_rate, acc_magnitude, gyro_magnitude
+            </div>
+          </div>
+
+          <div style={{ background: 'var(--bg-main)', padding: '12px', borderRadius: '6px', border: '1px solid var(--border-light)' }}>
+            <span className="mono" style={{ fontSize: '11px', fontWeight: '800', color: 'var(--amber-primary)' }}>STATISTICAL & SYSTEM (10)</span>
+            <div className="mono" style={{ fontSize: '12px', color: 'var(--graphite-dark)', marginTop: '6px', lineHeight: '1.6' }}>
+              acc_mean, acc_std, gyro_mean, gyro_std, ground_truth_lat, ground_truth_lon, ground_truth_speed, ground_truth_heading, gnss_status, timestamp
             </div>
           </div>
         </div>
@@ -488,7 +507,7 @@ export function DataFeatureEngineeringSection({ onSwitchToPrototype }) {
       <div className="content-card">
         <h3 style={{ fontSize: '14px', fontWeight: '800', color: 'var(--graphite-dark)', marginBottom: '12px' }}>DATA PROCESSING FLOW</h3>
         <div className="arch-diagram-box" style={{ padding: '12px' }}>
-          RAW LOG DATA → PARSING → CLEANING → TRACK IDENTIFICATION → TEMPORAL FEATURE ENGINEERING → ML-READY DATA
+          RAW SENSOR DATA → 3-AXIS GRAVITY SUBTRACTION → BUTTERWORTH LOW-PASS FILTER → DERIVED MATRIX (28 COLS) → ML-READY SEQUENCE
         </div>
       </div>
 
