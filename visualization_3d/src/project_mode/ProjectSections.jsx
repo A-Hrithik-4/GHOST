@@ -4,7 +4,7 @@ import React from 'react';
  * ProjectSections.jsx
  * 
  * Contains all 12 technical story sections for GHOST Project Mode.
- * Aerospace Engineering Technical Light Theme (#0F172A, #F8FAFC, #2563EB, #06B6D4, #16A34A).
+ * Zero emojis, clean typography, structured for high-end technical presentation.
  */
 
 // 01. Overview Section
@@ -17,7 +17,7 @@ export function OverviewSection({ onSwitchToPrototype }) {
         <div className="hero-subtitle">
           GHOST is an AI-assisted dead-reckoning system designed to maintain positioning continuity during temporary GNSS outages.
         </div>
-        <p style={{ marginTop: '14px', fontSize: '14.5px', color: '#64748B', lineHeight: '1.65' }}>
+        <p style={{ marginTop: '14px', fontSize: '14.5px', color: '#5B6575', lineHeight: '1.65' }}>
           It combines onboard IMU signals, an AI-based speed estimator, speed calibration, sensor fusion, and road-network constraints to estimate vehicle motion when GNSS is temporarily unavailable.
         </p>
       </div>
@@ -61,7 +61,7 @@ export function OverviewSection({ onSwitchToPrototype }) {
         <p style={{ marginTop: '8px' }}>
           Its purpose is simpler:
         </p>
-        <p style={{ marginTop: '8px', fontWeight: '700', color: '#0F172A' }}>
+        <p style={{ marginTop: '8px', fontWeight: '700', color: '#0B1220' }}>
           When GNSS temporarily disappears, maintain a reliable estimate of where the vehicle is going.
         </p>
       </div>
@@ -89,14 +89,14 @@ export function ProblemSection() {
 
       <div className="content-card">
         <h3>Temporary signal loss can occur because of:</h3>
-        <ul className="clean-list" style={{ marginTop: '12px', paddingLeft: '20px', color: '#64748B', fontSize: '14.5px', lineHeight: '1.8' }}>
+        <ul className="clean-list" style={{ marginTop: '12px', paddingLeft: '20px', color: '#5B6575', fontSize: '14.5px', lineHeight: '1.8' }}>
           <li>Tunnels and underground environments</li>
           <li>Urban obstruction and signal blockage</li>
           <li>Interference</li>
           <li>Poor satellite visibility</li>
           <li>Challenging operating environments</li>
         </ul>
-        <p style={{ marginTop: '16px', fontWeight: '600', color: '#0F172A' }}>
+        <p style={{ marginTop: '16px', fontWeight: '600', color: '#0B1220' }}>
           During these outages, the vehicle continues moving even though the absolute position update disappears.
         </p>
       </div>
@@ -117,11 +117,11 @@ export function ProblemSection() {
         <div className="val-large val-blue" style={{ fontSize: '28px', margin: '10px 0' }}>
           ≤ 10% OF DISTANCE TRAVELLED
         </div>
-        <p style={{ fontSize: '14px', color: '#64748B' }}>
+        <p style={{ fontSize: '14px', color: '#5B6575' }}>
           For the evaluated trajectory: 1162.5 m travelled → maximum allowable drift = 116.25 m
         </p>
-        <div style={{ marginTop: '12px', padding: '12px 16px', background: '#F1F5F9', borderRadius: '8px', display: 'inline-block' }}>
-          <span style={{ fontSize: '13px', fontWeight: '700', color: '#16A34A' }}>
+        <div style={{ marginTop: '12px', padding: '12px 16px', background: '#EEF2F7', borderRadius: '8px', display: 'inline-block' }}>
+          <span style={{ fontSize: '13px', fontWeight: '700', color: '#059669' }}>
             GHOST’s demonstrated final error: 27.95 m (2.40% Drift)
           </span>
         </div>
@@ -185,8 +185,8 @@ export function ApproachSection() {
 
         <div className="flow-step-card highlight-green">
           <div className="step-tag tag-green">OUTPUT</div>
-          <h4 style={{ color: '#16A34A' }}>Continuous Position Estimate</h4>
-          <p style={{ color: '#16A34A' }}>A GNSS-free position trajectory during the outage</p>
+          <h4 style={{ color: '#059669' }}>Continuous Position Estimate</h4>
+          <p style={{ color: '#059669' }}>A GNSS-free position trajectory during the outage</p>
         </div>
       </div>
     </div>
@@ -245,8 +245,8 @@ export function HowItWorksSection() {
 
       <div className="content-card highlight-green-box" style={{ marginTop: '12px' }}>
         <span className="step-idx-pill tag-green">07</span>
-        <h3 style={{ color: '#16A34A' }}>POSITION OUTPUT</h3>
-        <p style={{ color: '#0F172A' }}>The EKF continuously propagates the vehicle state throughout the GNSS outage.</p>
+        <h3 style={{ color: '#059669' }}>POSITION OUTPUT</h3>
+        <p style={{ color: '#0B1220' }}>The EKF continuously propagates the vehicle state throughout the GNSS outage.</p>
       </div>
     </div>
   );
@@ -282,13 +282,13 @@ export function ArchitectureSection() {
               <td>Captures recent vehicle dynamics</td>
             </tr>
             <tr>
-              <td style={{ color: '#06B6D4', fontWeight: '800' }}>AI</td>
-              <td style={{ color: '#06B6D4' }}>1D-CNN</td>
+              <td style={{ color: '#7C3AED', fontWeight: '800' }}>AI</td>
+              <td style={{ color: '#7C3AED' }}>1D-CNN</td>
               <td>Estimates vehicle speed</td>
             </tr>
             <tr>
-              <td style={{ color: '#06B6D4', fontWeight: '800' }}>Calibration</td>
-              <td style={{ color: '#06B6D4' }}>Isotonic Regression</td>
+              <td style={{ color: '#7C3AED', fontWeight: '800' }}>Calibration</td>
+              <td style={{ color: '#7C3AED' }}>Isotonic Regression</td>
               <td>Corrects speed-dependent CNN bias</td>
             </tr>
             <tr>
@@ -302,9 +302,9 @@ export function ArchitectureSection() {
               <td>Provides road-heading constraint</td>
             </tr>
             <tr className="row-winner">
-              <td style={{ color: '#16A34A', fontWeight: '800' }}>Output</td>
-              <td style={{ color: '#16A34A', fontWeight: '800' }}>Position Track</td>
-              <td style={{ color: '#16A34A' }}>Produces GNSS-free positioning estimate</td>
+              <td style={{ color: '#059669', fontWeight: '800' }}>Output</td>
+              <td style={{ color: '#059669', fontWeight: '800' }}>Position Track</td>
+              <td style={{ color: '#059669' }}>Produces GNSS-free positioning estimate</td>
             </tr>
           </tbody>
         </table>
@@ -312,7 +312,7 @@ export function ArchitectureSection() {
 
       <div className="content-card">
         <h3>DESIGN PRINCIPLE</h3>
-        <ul className="clean-list" style={{ marginTop: '10px', paddingLeft: '20px', color: '#64748B', fontSize: '14.5px', lineHeight: '1.8' }}>
+        <ul className="clean-list" style={{ marginTop: '10px', paddingLeft: '20px', color: '#5B6575', fontSize: '14.5px', lineHeight: '1.8' }}>
           <li><strong>AI</strong> estimates what the sensors cannot directly measure.</li>
           <li>The <strong>EKF</strong> decides how all measurements fit together.</li>
           <li>The <strong>road network</strong> provides an additional geometric constraint.</li>
@@ -368,8 +368,8 @@ export function MLExperimentsSection() {
 
       <div className="exp-card winner">
         <div className="exp-info">
-          <h4 style={{ color: '#16A34A' }}>EXPERIMENT 3 — ISOTONIC CALIBRATION</h4>
-          <p style={{ color: '#16A34A' }}>The relationship between CNN predictions and actual speed was not purely linear. Isotonic Regression provided a monotonic nonlinear mapping that better corrected speed-dependent bias on the outage trajectory.</p>
+          <h4 style={{ color: '#059669' }}>EXPERIMENT 3 — ISOTONIC CALIBRATION</h4>
+          <p style={{ color: '#059669' }}>The relationship between CNN predictions and actual speed was not purely linear. Isotonic Regression provided a monotonic nonlinear mapping that better corrected speed-dependent bias on the outage trajectory.</p>
         </div>
         <div className="exp-badge-group">
           <span className="drift-val val-green">2.40%</span>
@@ -435,15 +435,15 @@ export function ResultsSection() {
               <td>36.95 km/h</td>
               <td>7.67 km/h</td>
               <td>65.09 m</td>
-              <td style={{ color: '#F59E0B', fontWeight: '800' }}>5.60%</td>
+              <td style={{ color: '#D97706', fontWeight: '800' }}>5.60%</td>
             </tr>
             <tr className="row-winner">
-              <td style={{ color: '#16A34A', fontWeight: '800' }}>Isotonic Calibration</td>
+              <td style={{ color: '#059669', fontWeight: '800' }}>Isotonic Calibration</td>
               <td>19.23 km/h</td>
               <td>32.74 km/h</td>
               <td>7.17 km/h</td>
-              <td style={{ color: '#16A34A', fontWeight: '800' }}>27.95 m</td>
-              <td style={{ color: '#16A34A', fontWeight: '900', fontSize: '16px' }}>2.40%</td>
+              <td style={{ color: '#059669', fontWeight: '800' }}>27.95 m</td>
+              <td style={{ color: '#059669', fontWeight: '900', fontSize: '16px' }}>2.40%</td>
             </tr>
           </tbody>
         </table>
@@ -455,21 +455,21 @@ export function ResultsSection() {
           <div className="val-large val-green" style={{ fontSize: '32px', margin: '10px 0' }}>
             27.95 m final position error
           </div>
-          <p style={{ color: '#64748B' }}>
+          <p style={{ color: '#5B6575' }}>
             over 1162.5 m of travel during 60 seconds without GNSS
           </p>
         </div>
 
         <div className="content-card">
           <h3>DRIFT CALCULATION</h3>
-          <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '16px', fontWeight: '700', color: '#0F172A', marginTop: '10px' }}>
+          <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '16px', fontWeight: '700', color: '#0B1220', marginTop: '10px' }}>
             27.95 / 1162.5 × 100 = 2.40%
           </div>
-          <div style={{ marginTop: '14px', fontSize: '13px', color: '#64748B' }}>
+          <div style={{ marginTop: '14px', fontSize: '13px', color: '#5B6575' }}>
             <div>SIH limit: <strong>10.00%</strong></div>
-            <div>GHOST: <strong style={{ color: '#16A34A' }}>2.40%</strong></div>
-            <div style={{ marginTop: '6px', fontWeight: '700', color: '#16A34A' }}>
-              SIH BENCHMARK: PASS (7.60 percentage points below limit)
+            <div>GHOST: <strong style={{ color: '#059669' }}>2.40%</strong></div>
+            <div style={{ marginTop: '6px', fontWeight: '700', color: '#059669' }}>
+              MARGIN: 7.60 percentage points below the SIH limit
             </div>
           </div>
         </div>
@@ -510,14 +510,14 @@ export function ErrorAnalysisSection() {
         <p>
           The CNN compressed higher-speed predictions toward lower values. That created a travelled-distance deficit, which accumulated primarily as longitudinal position error.
         </p>
-        <div style={{ marginTop: '14px', padding: '12px 16px', background: '#FEF2F2', borderRadius: '8px', fontSize: '13px', color: '#DC2626', fontWeight: '700' }}>
+        <div style={{ marginTop: '14px', padding: '12px 16px', background: '#FEE2E2', borderRadius: '8px', fontSize: '13px', color: '#DC2626', fontWeight: '700' }}>
           ORIGINAL ERROR: Along-track: −215.95 m | Cross-track: −27.32 m | Final error: 217.67 m | Drift: 18.72%
         </div>
       </div>
 
       <div className="content-card highlight-green-box">
         <h3>AFTER ISOTONIC CALIBRATION</h3>
-        <p style={{ color: '#0F172A' }}>
+        <p style={{ color: '#0B1220' }}>
           The calibrated speed estimate substantially reduced the longitudinal error.
         </p>
         <div className="grid-3-cols" style={{ margin: '16px 0' }}>
@@ -534,7 +534,7 @@ export function ErrorAnalysisSection() {
             <span className="lbl-card">Total vector error</span>
           </div>
         </div>
-        <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '13px', color: '#16A34A', fontWeight: '700' }}>
+        <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '13px', color: '#059669', fontWeight: '700' }}>
           The vector relationship is: √((-1.16)² + (-27.93)²) = 27.95 m
         </div>
       </div>
@@ -582,14 +582,14 @@ export function MethodologySection() {
         <p>
           Each track loses its first observation because previous-history features cannot be calculated without a preceding measurement.
         </p>
-        <p style={{ marginTop: '8px', fontWeight: '700', fontFamily: 'JetBrains Mono, monospace', color: '#0F172A' }}>
+        <p style={{ marginTop: '8px', fontWeight: '700', fontFamily: 'JetBrains Mono, monospace', color: '#0B1220' }}>
           Therefore: 50,000 − 50 = 49,950 ML-ready records
         </p>
       </div>
 
       <div className="content-card">
         <h3>DATA SPLITS</h3>
-        <div style={{ padding: '12px 16px', background: '#F1F5F9', borderRadius: '8px', fontFamily: 'JetBrains Mono, monospace', fontSize: '13px', color: '#0F172A', fontWeight: '700' }}>
+        <div style={{ padding: '12px 16px', background: '#EEF2F7', borderRadius: '8px', fontFamily: 'JetBrains Mono, monospace', fontSize: '13px', color: '#0B1220', fontWeight: '700' }}>
           Training → Validation → Test → Outage Evaluation
         </div>
         <p style={{ marginTop: '12px' }}>
@@ -600,9 +600,9 @@ export function MethodologySection() {
       <div className="content-card highlight-green-box">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <h3>LEAKAGE CONTROL</h3>
-          <span className="badge-status badge-winner">LEAKAGE AUDIT: PASS</span>
+          <span className="badge-status badge-winner">LEAKAGE AUDIT: PASS ✓</span>
         </div>
-        <p style={{ marginTop: '8px', color: '#0F172A' }}>
+        <p style={{ marginTop: '8px', color: '#0B1220' }}>
           Calibration models were fitted using clean training data only. The outage interval was excluded from fitting. Validation and test data were not used to fit the final calibration.
         </p>
       </div>
@@ -654,13 +654,13 @@ export function FinalModelSection() {
 
         <div className="flow-step-card highlight-green">
           <div className="step-tag tag-green">RESULT</div>
-          <h4 style={{ color: '#16A34A' }}>Position Continuity</h4>
+          <h4 style={{ color: '#059669' }}>Position Continuity</h4>
         </div>
       </div>
 
       <div className="content-card" style={{ marginTop: '24px', borderLeft: '4px solid #2563EB' }}>
         <h3>The final demonstrated configuration is:</h3>
-        <p style={{ fontWeight: '700', fontSize: '16px', color: '#0F172A', marginTop: '6px' }}>
+        <p style={{ fontWeight: '700', fontSize: '16px', color: '#0B1220', marginTop: '6px' }}>
           1D-CNN Speed Estimator + Leakage-Free Isotonic Speed Calibration + 5-State EKF + OSM Road-Heading Constraint
         </p>
       </div>
@@ -668,12 +668,12 @@ export function FinalModelSection() {
       <div className="content-card">
         <h3>WHY THIS CONFIGURATION?</h3>
         <p>Because each component addresses a different part of the problem:</p>
-        <ul className="clean-list" style={{ marginTop: '10px', paddingLeft: '20px', color: '#64748B', fontSize: '14.5px', lineHeight: '1.8' }}>
-          <li><strong style={{ color: '#06B6D4' }}>CNN</strong> → estimates speed</li>
-          <li><strong style={{ color: '#06B6D4' }}>Calibration</strong> → corrects speed bias</li>
+        <ul className="clean-list" style={{ marginTop: '10px', paddingLeft: '20px', color: '#5B6575', fontSize: '14.5px', lineHeight: '1.8' }}>
+          <li><strong style={{ color: '#7C3AED' }}>CNN</strong> → estimates speed</li>
+          <li><strong style={{ color: '#7C3AED' }}>Calibration</strong> → corrects speed bias</li>
           <li><strong>EKF</strong> → fuses motion information</li>
           <li><strong>OSM</strong> → constrains heading</li>
-          <li><strong style={{ color: '#16A34A' }}>Together</strong> → maintain positioning continuity</li>
+          <li><strong style={{ color: '#059669' }}>Together</strong> → maintain positioning continuity</li>
         </ul>
       </div>
     </div>
@@ -700,7 +700,7 @@ export function LimitationsSection() {
 
       <div className="content-card">
         <h3>IMPORTANT LIMITATIONS</h3>
-        <ul className="clean-list" style={{ marginTop: '10px', paddingLeft: '20px', color: '#64748B', fontSize: '14.5px', lineHeight: '1.8' }}>
+        <ul className="clean-list" style={{ marginTop: '10px', paddingLeft: '20px', color: '#5B6575', fontSize: '14.5px', lineHeight: '1.8' }}>
           <li>Evaluation is based on the demonstrated outage trajectory.</li>
           <li>Calibration performance is sensitive to speed-distribution differences.</li>
           <li>Chronological test performance differs from outage performance.</li>
@@ -711,7 +711,7 @@ export function LimitationsSection() {
 
       <div className="content-card highlight-green-box">
         <h3>THE SCIENTIFIC TAKEAWAY</h3>
-        <p style={{ color: '#0F172A', fontWeight: '600' }}>
+        <p style={{ color: '#0B1220', fontWeight: '600' }}>
           The architecture works on the demonstrated scenario, and the experiments reveal why it works.
         </p>
       </div>
@@ -731,7 +731,7 @@ export function TechStackSection({ onSwitchToPrototype }) {
       <div className="grid-2-cols">
         <div className="content-card accent-card-violet">
           <span className="step-tag tag-violet">AI / MACHINE LEARNING</span>
-          <ul className="clean-list" style={{ marginTop: '10px', paddingLeft: '18px', color: '#64748B', fontSize: '14px', lineHeight: '1.7' }}>
+          <ul className="clean-list" style={{ marginTop: '10px', paddingLeft: '18px', color: '#5B6575', fontSize: '14px', lineHeight: '1.7' }}>
             <li>Python</li>
             <li>PyTorch</li>
             <li>Scikit-Learn</li>
@@ -742,7 +742,7 @@ export function TechStackSection({ onSwitchToPrototype }) {
 
         <div className="content-card">
           <span className="step-tag">SENSOR FUSION</span>
-          <ul className="clean-list" style={{ marginTop: '10px', paddingLeft: '18px', color: '#64748B', fontSize: '14px', lineHeight: '1.7' }}>
+          <ul className="clean-list" style={{ marginTop: '10px', paddingLeft: '18px', color: '#5B6575', fontSize: '14px', lineHeight: '1.7' }}>
             <li>NumPy</li>
             <li>SciPy</li>
             <li>Extended Kalman Filter</li>
@@ -751,7 +751,7 @@ export function TechStackSection({ onSwitchToPrototype }) {
 
         <div className="content-card">
           <span className="step-tag">MAP DATA</span>
-          <ul className="clean-list" style={{ marginTop: '10px', paddingLeft: '18px', color: '#64748B', fontSize: '14px', lineHeight: '1.7' }}>
+          <ul className="clean-list" style={{ marginTop: '10px', paddingLeft: '18px', color: '#5B6575', fontSize: '14px', lineHeight: '1.7' }}>
             <li>OpenStreetMap</li>
             <li>Road geometry</li>
             <li>Road-heading constraints</li>
@@ -760,7 +760,7 @@ export function TechStackSection({ onSwitchToPrototype }) {
 
         <div className="content-card">
           <span className="step-tag">VISUALIZATION</span>
-          <ul className="clean-list" style={{ marginTop: '10px', paddingLeft: '18px', color: '#64748B', fontSize: '14px', lineHeight: '1.7' }}>
+          <ul className="clean-list" style={{ marginTop: '10px', paddingLeft: '18px', color: '#5B6575', fontSize: '14px', lineHeight: '1.7' }}>
             <li>React 18</li>
             <li>Three.js</li>
             <li>React Three Fiber</li>
@@ -771,8 +771,8 @@ export function TechStackSection({ onSwitchToPrototype }) {
       </div>
 
       <div className="hero-box" style={{ textAlign: 'center', marginTop: '32px' }}>
-        <h3 style={{ fontSize: '24px', fontWeight: '900', color: '#0F172A' }}>EXPERIENCE GHOST</h3>
-        <p style={{ margin: '12px auto 24px auto', maxWidth: '650px', color: '#64748B', fontSize: '15px' }}>
+        <h3 style={{ fontSize: '24px', fontWeight: '900', color: '#0B1220' }}>EXPERIENCE GHOST</h3>
+        <p style={{ margin: '12px auto 24px auto', maxWidth: '650px', color: '#5B6575', fontSize: '15px' }}>
           The technical pipeline is backed by an interactive two-vehicle 3D demonstration. The prototype visualizes the navigation scenario and shows the system continuing to estimate vehicle position during GNSS loss.
         </p>
         <button className="btn-cta" onClick={onSwitchToPrototype}>
@@ -780,14 +780,14 @@ export function TechStackSection({ onSwitchToPrototype }) {
         </button>
       </div>
 
-      <div className="content-card" style={{ marginTop: '32px', textAlign: 'center', background: '#F1F5F9', border: '1px solid #E2E8F0' }}>
+      <div className="content-card" style={{ marginTop: '32px', textAlign: 'center', background: '#EEF2F7', border: '1px solid #DCE2EA' }}>
         <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '12px', fontWeight: '800', color: '#2563EB', letterSpacing: '1.5px' }}>
           FINAL PROJECT STATEMENT
         </div>
-        <div style={{ fontSize: '22px', fontWeight: '900', color: '#0F172A', margin: '8px 0' }}>
+        <div style={{ fontSize: '22px', fontWeight: '900', color: '#0B1220', margin: '8px 0' }}>
           GHOST: WHEN GNSS DISAPPEARS, POSITIONING DOESN’T HAVE TO.
         </div>
-        <p style={{ fontSize: '14px', color: '#64748B', maxWidth: '750px', margin: '0 auto' }}>
+        <p style={{ fontSize: '14px', color: '#5B6575', maxWidth: '750px', margin: '0 auto' }}>
           GHOST combines AI-based speed estimation, leakage-free calibration, inertial sensor fusion, and road-network constraints to maintain vehicle positioning continuity during temporary GNSS outages.
         </p>
 
@@ -814,7 +814,7 @@ export function TechStackSection({ onSwitchToPrototype }) {
           </div>
         </div>
 
-        <div style={{ marginTop: '16px', fontSize: '12px', color: '#64748B', fontWeight: '600' }}>
+        <div style={{ marginTop: '16px', fontSize: '12px', color: '#5B6575', fontWeight: '600' }}>
           SMART INDIA HACKATHON 2026 · SIH26168 · ISRO — AI-ML based Intelligent Dead Reckoning system for seamless navigation
         </div>
       </div>
