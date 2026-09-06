@@ -88,13 +88,13 @@ body, html, #root {
   display: inline-flex;
   align-items: center;
   padding: 3px;
-  background-color: #F8E8EE;
-  border: 1.5px solid #F4C2C2;
+  background-color: rgba(0, 0, 0, 0.05);
+  border: 1.5px solid rgba(0, 0, 0, 0.1);
   border-radius: 20px;
   gap: 2px;
   user-select: none;
   overflow: hidden;
-  transition: all 0.3s ease;
+  transition: background-color 0.4s ease, border-color 0.4s ease;
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
@@ -104,19 +104,20 @@ body, html, #root {
   bottom: 3px;
   width: calc(50% - 4px);
   border-radius: 16px;
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.35s ease, box-shadow 0.35s ease;
   z-index: 1;
-  box-shadow: 0 2px 6px rgba(216, 27, 96, 0.2);
 }
 
 .sliding-toggle-container.is-proto .sliding-pill-indicator {
   transform: translateX(0);
   background-color: #D81B60;
+  box-shadow: 0 2px 8px rgba(216, 27, 96, 0.35);
 }
 
 .sliding-toggle-container.is-project .sliding-pill-indicator {
   transform: translateX(100%);
-  background-color: #C88A00;
+  background-color: #D4AF37;
+  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.4);
 }
 
 .sliding-btn {
@@ -132,8 +133,8 @@ body, html, #root {
   font-size: 11px;
   font-weight: 800;
   cursor: pointer;
-  color: #7A354A;
-  transition: color 0.25s ease;
+  color: #64748B;
+  transition: color 0.3s ease;
   border-radius: 16px;
   min-width: 90px;
   justify-content: center;
@@ -668,8 +669,8 @@ body, html, #root {
 }
 
 .entry-option-card {
-  background-color: #F3EFE6;
-  border: 1.5px solid #D8D2C6;
+  background-color: #FAF6EE;
+  border: 1.5px solid #E5DDD0;
   border-radius: 8px;
   padding: 22px;
   display: flex;
@@ -679,10 +680,16 @@ body, html, #root {
   transition: all 0.2s ease;
 }
 
-.entry-option-card:hover {
+.entry-option-card.option-proto:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(32, 37, 31, 0.1);
-  border-color: #C88A00;
+  box-shadow: 0 8px 20px rgba(216, 27, 96, 0.12);
+  border-color: #D81B60;
+}
+
+.entry-option-card.option-project:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(212, 175, 55, 0.15);
+  border-color: #D4AF37;
 }
 
 .option-header-row {
@@ -701,14 +708,14 @@ body, html, #root {
   justify-content: center;
 }
 
-.option-icon-box.amber-box {
-  background-color: #F4E4B8;
-  border: 1px solid #D6A43A;
+.option-icon-box.rose-box {
+  background-color: #FDE8ED;
+  border: 1px solid #F8C8D8;
 }
 
-.option-icon-box.graphite-box {
-  background-color: #E9E3D7;
-  border: 1px solid #4B5149;
+.option-icon-box.gold-box {
+  background-color: #FFF5D6;
+  border: 1px solid #E6B800;
 }
 
 .option-badge {
@@ -719,16 +726,16 @@ body, html, #root {
   border-radius: 4px;
 }
 
-.badge-amber {
-  background-color: #F4E4B8;
-  color: #C88A00;
-  border: 1px solid #D6A43A;
+.badge-rose {
+  background-color: #FDE8ED;
+  color: #D81B60;
+  border: 1px solid #F8C8D8;
 }
 
-.badge-graphite {
-  background-color: #E9E3D7;
-  color: #20251F;
-  border: 1px solid #D8D2C6;
+.badge-gold {
+  background-color: #FFF5D6;
+  color: #B38F00;
+  border: 1px solid #E6B800;
 }
 
 .option-content h3 {
@@ -768,22 +775,23 @@ body, html, #root {
   border: none;
 }
 
-.action-amber {
-  background-color: #C88A00;
+.action-rose {
+  background-color: #D81B60;
   color: #FFFFFF;
 }
 
-.action-amber:hover {
-  background-color: #E0A526;
+.action-rose:hover {
+  background-color: #C2185B;
 }
 
-.action-graphite {
-  background-color: #20251F;
+.action-gold {
+  background-color: #D4AF37;
   color: #FFFFFF;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
-.action-graphite:hover {
-  background-color: #343A33;
+.action-gold:hover {
+  background-color: #E0B000;
 }
 
 .entry-modal-footer {

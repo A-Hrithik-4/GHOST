@@ -2,9 +2,9 @@
 
 :root {
   /* Surface Backgrounds */
-  --bg-main: #F3EFE6;
-  --bg-secondary: #E9E3D7;
-  --bg-card: #FBF9F3;
+  --bg-main: #FAF6EE;
+  --bg-secondary: #F3ECE0;
+  --bg-card: #FFFFFF;
 
   /* Graphite & Typography */
   --graphite-dark: #20251F;
@@ -13,27 +13,27 @@
   --text-secondary: #4B5149;
   --text-muted: #6B7268;
 
-  /* Amber / Gold */
-  --amber-primary: #C88A00;
-  --amber-bright: #E0A526;
-  --amber-soft-bg: #F4E4B8;
-  --amber-border: #D6A43A;
+  /* Pure Aerospace Gold Palette */
+  --amber-primary: #D4AF37;       /* Metallic / Pure Gold */
+  --amber-bright: #FFD700;        /* Luminous Bright Gold */
+  --amber-soft-bg: #FFF5D6;       /* Soft Warm Gold Glow Background */
+  --amber-border: #E6B800;        /* Rich Gold Accent Border */
 
   /* Matrix Green */
   --green-primary: #16803C;
   --green-soft-bg: #DDEEDF;
   --green-border: #8BBE95;
 
-  /* Technical Cyan (Sparingly used) */
+  /* Technical Cyan */
   --cyan-tech: #168FA3;
 
   /* Status Colors */
   --status-success: #16803C;
-  --status-warning: #B77900;
+  --status-warning: #D4AF37;
   --status-error: #B42318;
 
   /* Borders & Dividers */
-  --border-light: #D8D2C6;
+  --border-light: #E5DDD0;
   --divider-dark: #4B5149;
 
   /* Code Panel Dark Contrast */
@@ -50,6 +50,7 @@
   color: var(--text-primary);
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   overflow: hidden;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 /* Global Mode Switcher & Technical Header Bar */
@@ -62,6 +63,7 @@
   border-bottom: 1.5px solid var(--border-light);
   z-index: 200;
   box-shadow: 0 2px 8px rgba(32, 37, 31, 0.05);
+  transition: background-color 0.4s ease, border-color 0.4s ease;
 }
 
 .header-brand-box {

@@ -18,12 +18,12 @@ export default function EntryModal({ onSelectMode }) {
 
         <div className="entry-options-grid">
           {/* Option 1: Prototype Mode */}
-          <div className="entry-option-card" onClick={() => onSelectMode('prototype')}>
+          <div className="entry-option-card option-proto" onClick={() => onSelectMode('prototype')}>
             <div className="option-header-row">
-              <div className="option-icon-box amber-box">
-                <Activity size={22} color="#C88A00" />
+              <div className="option-icon-box rose-box">
+                <Activity size={22} color="#D81B60" />
               </div>
-              <span className="option-badge badge-amber">3D SIMULATION</span>
+              <span className="option-badge badge-rose">3D SIMULATION</span>
             </div>
             <div className="option-content">
               <h3>PROTOTYPE MODE</h3>
@@ -37,19 +37,19 @@ export default function EntryModal({ onSelectMode }) {
                 <li>Visualized drift accumulation (2.40% vs 69.73%)</li>
               </ul>
             </div>
-            <button className="btn-entry-action action-amber">
+            <button className="btn-entry-action action-rose">
               <span>LAUNCH PROTOTYPE</span>
               <ArrowRight size={14} />
             </button>
           </div>
 
           {/* Option 2: Project Mode */}
-          <div className="entry-option-card" onClick={() => onSelectMode('project')}>
+          <div className="entry-option-card option-project" onClick={() => onSelectMode('project')}>
             <div className="option-header-row">
-              <div className="option-icon-box graphite-box">
-                <FileText size={22} color="#20251F" />
+              <div className="option-icon-box gold-box">
+                <FileText size={22} color="#D4AF37" />
               </div>
-              <span className="option-badge badge-graphite">TECHNICAL DOSSIER</span>
+              <span className="option-badge badge-gold">TECHNICAL DOSSIER</span>
             </div>
             <div className="option-content">
               <h3>PROJECT MODE</h3>
@@ -62,7 +62,7 @@ export default function EntryModal({ onSelectMode }) {
                 <li>Interactive Python code viewers & audit logs</li>
               </ul>
             </div>
-            <button className="btn-entry-action action-graphite">
+            <button className="btn-entry-action action-gold">
               <span>OPEN PROJECT DOSSIER</span>
               <ArrowRight size={14} />
             </button>
