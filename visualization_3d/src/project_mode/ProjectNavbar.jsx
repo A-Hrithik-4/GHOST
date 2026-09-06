@@ -1,5 +1,5 @@
 import React from 'react';
-import { FileText, Layers } from 'lucide-react';
+import SlidingModeToggle from '../components/SlidingModeToggle';
 
 export default function ProjectNavbar({ activeMode, onSwitchMode }) {
   return (
@@ -8,6 +8,11 @@ export default function ProjectNavbar({ activeMode, onSwitchMode }) {
         <span className="header-logo" style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '18px', fontWeight: '900', color: 'var(--amber-primary)', letterSpacing: '2px' }}>
           GHOST
         </span>
+        <div className="header-divider" />
+        
+        {/* Top-Left Sliding Mode Toggle Button */}
+        <SlidingModeToggle activeMode={activeMode} onSwitchMode={onSwitchMode} />
+
         <div className="header-divider" />
         <div className="header-sub-info">
           <h1 style={{ fontSize: '12px', fontWeight: '800', letterSpacing: '1px', color: 'var(--graphite-dark)', textTransform: 'uppercase', margin: 0 }}>
@@ -19,23 +24,6 @@ export default function ProjectNavbar({ activeMode, onSwitchMode }) {
       <div className="header-right-group" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
         <div className="sih-tag" style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '12px', fontWeight: '800', color: 'var(--graphite-secondary)', letterSpacing: '1px' }}>
           SIH 26168
-        </div>
-
-        <div className="mode-toggle-group">
-          <button 
-            className={`mode-btn ${activeMode === 'project' ? 'active-project' : ''}`}
-            onClick={() => onSwitchMode('project')}
-          >
-            <FileText size={13} />
-            <span>Project</span>
-          </button>
-          <button 
-            className={`mode-btn ${activeMode === 'prototype' ? 'active-proto' : ''}`}
-            onClick={() => onSwitchMode('prototype')}
-          >
-            <Layers size={13} />
-            <span>Prototype</span>
-          </button>
         </div>
       </div>
     </header>

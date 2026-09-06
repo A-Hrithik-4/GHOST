@@ -108,13 +108,13 @@ function SingleVehicleController({ sample, allSamples, isBaseline = false }) {
 
 export default function SingleVehicleScene({ sample, allSamples, gtRoadPoints = [], isBaseline = false }) {
   return (
-    <div style={{ width: '100%', height: '100%', position: 'relative', background: '#E0F2FE' }}>
+    <div style={{ width: '100%', height: '100%', position: 'relative', background: '#FCE4EC' }}>
       <Canvas shadows gl={{ antialias: true, alpha: false }}>
-        {/* Explicit WebGL Clear Background Color (Soft Sky Blue) */}
-        <color attach="background" args={["#E0F2FE"]} />
+        {/* Explicit WebGL Clear Background Color (Soft Light Rose Pink) */}
+        <color attach="background" args={["#FCE4EC"]} />
 
         {/* Soft Distance Horizon Fog */}
-        <fog attach="fog" args={["#E0F2FE", 150, 3500]} />
+        <fog attach="fog" args={["#FCE4EC", 150, 3500]} />
 
         {/* Perspective Camera */}
         <PerspectiveCamera makeDefault fov={52} position={[0, 7.5, -15]} near={0.1} far={4000} />
@@ -128,7 +128,7 @@ export default function SingleVehicleScene({ sample, allSamples, gtRoadPoints = 
           shadow-mapSize-width={2048} 
           shadow-mapSize-height={2048}
         />
-        <hemisphereLight skyColor="#E0F2FE" groundColor="#15803D" intensity={0.7} />
+        <hemisphereLight skyColor="#FFF0F3" groundColor="#E2A9BE" intensity={0.7} />
 
         {/* Daylight Sky */}
         <Sky sunPosition={[100, 80, 100]} inclination={0.5} azimuth={0.25} />

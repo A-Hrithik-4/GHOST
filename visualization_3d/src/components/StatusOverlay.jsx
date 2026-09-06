@@ -1,11 +1,11 @@
 import React from 'react';
-import { Layers, FileText } from 'lucide-react';
+import SlidingModeToggle from './SlidingModeToggle';
 
 /**
  * StatusOverlay.jsx
  * 
- * Top overlay header displaying GHOST branding, simulation mode, GNSS status badges,
- * and the outage event banner at t = 30s.
+ * Top overlay header displaying GHOST branding, sliding mode toggle in top-left, GNSS status badges,
+ * and outage event notification banner at t = 30s.
  */
 
 export default function StatusOverlay({ sample, currentTime, activeMode, onSwitchMode }) {
@@ -48,14 +48,21 @@ export default function StatusOverlay({ sample, currentTime, activeMode, onSwitc
         <div className="brand-section">
           <div className="brand-logo">GHOST</div>
           <div className="brand-divider"></div>
+          
+          {/* Top-Left Sliding Mode Toggle Button */}
+          {onSwitchMode && (
+            <SlidingModeToggle activeMode={activeMode} onSwitchMode={onSwitchMode} />
+          )}
+
+          <div className="brand-divider"></div>
           <div className="brand-info">
             <h1>GNSS-FREE HYBRID ONBOARD SENSOR TRACKER</h1>
             <p>Smart India Hackathon (SIH PS 26168) — ISRO</p>
           </div>
-          <div className="badge-dev">EXPERIMENTAL 60S GNSS OUTAGE SIMULATION</div>
         </div>
 
         <div className="status-section">
+          <div className="badge-dev">EXPERIMENTAL 60S GNSS OUTAGE SIMULATION</div>
           <div className={`status-badge ${gnssStatusClass}`}>
             <span className={`status-dot ${dotClass}`}></span>
             {gnssStatusText}
@@ -64,26 +71,6 @@ export default function StatusOverlay({ sample, currentTime, activeMode, onSwitc
             <span className={`status-dot ${ghostDotClass}`}></span>
             {ghostStatusText}
           </div>
-
-          {/* Mode Switcher Toggle Pill */}
-          {onSwitchMode && (
-            <div className="mode-toggle-group">
-              <button
-                className={`mode-btn ${activeMode === 'prototype' ? 'active-proto' : ''}`}
-                onClick={() => onSwitchMode('prototype')}
-              >
-                <Layers size={13} />
-                <span>Prototype</span>
-              </button>
-              <button
-                className={`mode-btn ${activeMode === 'project' ? 'active-project' : ''}`}
-                onClick={() => onSwitchMode('project')}
-              >
-                <FileText size={13} />
-                <span>Project</span>
-              </button>
-            </div>
-          )}
         </div>
       </header>
 
